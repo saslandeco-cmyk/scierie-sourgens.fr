@@ -2,7 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { PineCone } from "./Icons";
+import {
+  CladdingIcon,
+  DeckIcon,
+  FirewoodIcon,
+  ParquetIcon,
+  PineCone,
+  PlanksIcon,
+  TreatmentIcon,
+  TreesIcon,
+} from "./Icons";
 import s from "./home.module.css";
 
 const links = [
@@ -14,6 +23,17 @@ const links = [
 
 type NavSubcategory = { id: string; name: string; slug: string };
 type NavCategory = { id: string; name: string; slug: string; children: NavSubcategory[] };
+
+function CategoryIcon({ slug, className }: { slug: string; className?: string }) {
+  if (slug.includes("interieur")) return <ParquetIcon className={className} />;
+  if (slug.includes("exterieur")) return <TreesIcon className={className} />;
+  if (slug.includes("bardage") || slug.includes("clin")) return <CladdingIcon className={className} />;
+  if (slug.includes("terrasse")) return <DeckIcon className={className} />;
+  if (slug.includes("charpente")) return <PlanksIcon className={className} />;
+  if (slug.includes("chauffage") || slug.includes("buche")) return <FirewoodIcon className={className} />;
+  if (slug.includes("entretien") || slug.includes("quincaillerie")) return <TreatmentIcon className={className} />;
+  return <PineCone className={className} />;
+}
 
 export default function Header({ categories = [] }: { categories?: NavCategory[] }) {
   const [open, setOpen] = useState(false);
@@ -95,7 +115,8 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
               <ul>
                 {categories.map((category) => (
                   <li key={category.id}>
-                    <Link href={`/catalogue/${category.slug}`} onClick={closeAll}>
+                    <Link href={`/catalogue/${category.slug}`} onClick={closeAll} className={s.navCategoryHeader}>
+                      <CategoryIcon slug={category.slug} className={s.navCategoryIcon} />
                       {category.name}
                     </Link>
                     {category.children.length > 0 && (

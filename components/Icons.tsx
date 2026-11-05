@@ -148,6 +148,29 @@ export function SmallConeIcon({ className }: IconProps) {
   return <PineCone className={className} />;
 }
 
+/* ---------- Catalogue (icônes de catégories) ---------- */
+export function FirewoodIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} {...base}>
+      <circle cx="12" cy="16" r="5" />
+      <circle cx="24" cy="16" r="5" />
+      <circle cx="36" cy="16" r="5" />
+      <circle cx="18" cy="27" r="5" />
+      <circle cx="30" cy="27" r="5" />
+      <path d="M16 38c0-6 4-11 8-14 4 3 8 8 8 14a8 8 0 0 1-16 0Z" />
+    </svg>
+  );
+}
+
+export function TreatmentIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} {...base}>
+      <path d="M17 6h10v8l4 6v22a3 3 0 0 1-3 3H16a3 3 0 0 1-3-3V20l4-6Z" />
+      <path d="M13 28h18M17 6h10" />
+    </svg>
+  );
+}
+
 export function MapPinIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 48 48" className={className} {...base} strokeWidth={3}>
