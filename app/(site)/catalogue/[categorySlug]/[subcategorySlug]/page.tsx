@@ -25,12 +25,6 @@ export default async function SubcategoryPage({
         <Link href={`/catalogue/${categorySlug}`}>{subcategory.parent?.name}</Link> / {subcategory.name}
       </p>
 
-      {subcategory.bannerUrl && (
-        <div className={s.banner}>
-          <Image src={subcategory.bannerUrl} alt={subcategory.name} fill sizes="1080px" priority />
-        </div>
-      )}
-
       <h1 className={s.title}>{subcategory.name}</h1>
       {subcategory.description && <p className={s.description}>{subcategory.description}</p>}
 
