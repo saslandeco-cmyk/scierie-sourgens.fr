@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { slugify, uniqueSlug } from "@/lib/slug";
+import { deleteImage, uploadImage } from "@/lib/blob";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
 
 const CATEGORIES_PATH = `${ADMIN_BASE_PATH}/categories`;
@@ -13,9 +14,19 @@ export type CategoryFormState = { error?: string };
 
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
+  description: z.string().optional(),
   position: z.coerce.number().int().default(0),
   parentId: z.string().optional(),
 });
+
+function parseCategoryForm(formData: FormData) {
+  return schema.safeParse({
+    name: formData.get("name"),
+    description: formData.get("description") || undefined,
+    position: formData.get("position"),
+    parentId: formData.get("parentId") || undefined,
+  });
+}
 
 async function resolveParent(parentId: string | undefined) {
   if (!parentId) return null;
@@ -29,15 +40,16 @@ async function resolveParent(parentId: string | undefined) {
   return parent.id;
 }
 
+function getBannerFile(formData: FormData): File | null {
+  const file = formData.get("banner");
+  return file instanceof File && file.size > 0 ? file : null;
+}
+
 export async function createCategory(
   _prevState: CategoryFormState,
   formData: FormData,
 ): Promise<CategoryFormState> {
-  const parsed = schema.safeParse({
-    name: formData.get("name"),
-    position: formData.get("position"),
-    parentId: formData.get("parentId") || undefined,
-  });
+  const parsed = parseCategoryForm(formData);
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides." };
@@ -50,8 +62,18 @@ export async function createCategory(
       return Boolean(existing);
     });
 
+    const bannerFile = getBannerFile(formData);
+    const bannerUrl = bannerFile ? await uploadImage(bannerFile, "categories") : null;
+
     await prisma.category.create({
-      data: { name: parsed.data.name, slug, position: parsed.data.position, parentId },
+      data: {
+        name: parsed.data.name,
+        description: parsed.data.description ?? null,
+        slug,
+        position: parsed.data.position,
+        parentId,
+        bannerUrl,
+      },
     });
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
@@ -68,11 +90,7 @@ export async function updateCategory(
   _prevState: CategoryFormState,
   formData: FormData,
 ): Promise<CategoryFormState> {
-  const parsed = schema.safeParse({
-    name: formData.get("name"),
-    position: formData.get("position"),
-    parentId: formData.get("parentId") || undefined,
-  });
+  const parsed = parseCategoryForm(formData);
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides." };
@@ -106,9 +124,30 @@ export async function updateCategory(
       current.slug === slugify(parsed.data.name) ? current.slug : undefined,
     );
 
+    const bannerFile = getBannerFile(formData);
+    const removeBanner = formData.get("removeBanner") === "on";
+    let bannerUrl = current.bannerUrl;
+
+    if (bannerFile) {
+      bannerUrl = await uploadImage(bannerFile, "categories");
+      if (current.bannerUrl) {
+        await deleteImage(current.bannerUrl);
+      }
+    } else if (removeBanner && current.bannerUrl) {
+      await deleteImage(current.bannerUrl);
+      bannerUrl = null;
+    }
+
     await prisma.category.update({
       where: { id },
-      data: { name: parsed.data.name, slug, position: parsed.data.position, parentId },
+      data: {
+        name: parsed.data.name,
+        description: parsed.data.description ?? null,
+        slug,
+        position: parsed.data.position,
+        parentId,
+        bannerUrl,
+      },
     });
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
@@ -128,7 +167,12 @@ export async function deleteCategory(id: string) {
     throw new Error("Supprimez d'abord les sous-catégories et produits rattachés.");
   }
 
+  const category = await prisma.category.findUnique({ where: { id } });
   await prisma.category.delete({ where: { id } });
+  if (category?.bannerUrl) {
+    await deleteImage(category.bannerUrl);
+  }
+
   revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
   revalidatePath("/");

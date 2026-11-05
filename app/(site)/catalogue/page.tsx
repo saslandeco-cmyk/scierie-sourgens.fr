@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getCategoryTree } from "@/lib/catalog";
 import s from "./catalogue.module.css";
 
@@ -17,6 +18,11 @@ export default async function CataloguePage() {
         <div className={s.grid}>
           {categories.map((category) => (
             <Link key={category.id} href={`/catalogue/${category.slug}`} className={s.card}>
+              {category.bannerUrl && (
+                <div className={s.cardImage}>
+                  <Image src={category.bannerUrl} alt={category.name} fill sizes="220px" />
+                </div>
+              )}
               <div className={s.cardBody}>
                 <h3>{category.name}</h3>
                 <p>

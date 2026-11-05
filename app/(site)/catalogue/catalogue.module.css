@@ -22,10 +22,37 @@
   color: inherit;
 }
 
+.banner {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e8e5db;
+}
+
+.banner img {
+  object-fit: cover;
+}
+
+@media (max-width: 600px) {
+  .banner {
+    height: 160px;
+  }
+}
+
 .title {
   font-size: 32px;
   margin: 0 0 32px;
   color: #2e3022;
+}
+
+.description {
+  margin: -16px 0 32px;
+  color: #555;
+  max-width: 720px;
+  line-height: 1.6;
 }
 
 .grid {

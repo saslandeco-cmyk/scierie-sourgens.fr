@@ -27,7 +27,13 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
       <CategoryForm
         action={updateCategory.bind(null, id)}
         rootCategories={rootCategories}
-        defaults={{ name: category.name, position: category.position, parentId: category.parentId }}
+        defaults={{
+          name: category.name,
+          description: category.description ?? "",
+          position: category.position,
+          parentId: category.parentId,
+          bannerUrl: category.bannerUrl,
+        }}
         submitLabel="Enregistrer"
       />
     </div>

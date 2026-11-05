@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { uniqueSlug } from "@/lib/slug";
-import { deleteProductImage, uploadProductImage } from "@/lib/blob";
+import { deleteImage, uploadImage } from "@/lib/blob";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
 
 const PRODUCTS_PATH = `${ADMIN_BASE_PATH}/products`;
@@ -30,7 +30,7 @@ function parseProductForm(formData: FormData) {
 
 async function uploadNewImages(formData: FormData): Promise<string[]> {
   const files = formData.getAll("images").filter((f): f is File => f instanceof File && f.size > 0);
-  return Promise.all(files.map((file) => uploadProductImage(file)));
+  return Promise.all(files.map((file) => uploadImage(file, "products")));
 }
 
 export async function createProduct(
@@ -126,7 +126,7 @@ export async function updateProduct(
       },
     });
 
-    await Promise.all(imagesToRemove.map((img) => deleteProductImage(img.url)));
+    await Promise.all(imagesToRemove.map((img) => deleteImage(img.url)));
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
@@ -141,7 +141,7 @@ export async function deleteProduct(id: string) {
   if (!product) return;
 
   await prisma.product.delete({ where: { id } });
-  await Promise.all(product.images.map((img) => deleteProductImage(img.url)));
+  await Promise.all(product.images.map((img) => deleteImage(img.url)));
 
   revalidatePath(PRODUCTS_PATH);
   revalidatePath("/catalogue");

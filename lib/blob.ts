@@ -1,13 +1,13 @@
 import { del, put } from "@vercel/blob";
 
-export async function uploadProductImage(file: File): Promise<string> {
+export async function uploadImage(file: File, folder: string): Promise<string> {
   const ext = file.name.includes(".") ? file.name.split(".").pop() : "jpg";
-  const pathname = `products/${crypto.randomUUID()}.${ext}`;
+  const pathname = `${folder}/${crypto.randomUUID()}.${ext}`;
   const blob = await put(pathname, file, { access: "public" });
   return blob.url;
 }
 
-export async function deleteProductImage(url: string): Promise<void> {
+export async function deleteImage(url: string): Promise<void> {
   try {
     await del(url);
   } catch {
