@@ -29,11 +29,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       <h1 className={s.title}>{category.name}</h1>
       {category.description && <p className={s.description}>{category.description}</p>}
 
-      {category.children.length === 0 && category.products.length === 0 && (
-        <p className={s.empty}>Aucun contenu pour le moment.</p>
-      )}
-
-      {category.children.length > 0 && (
+      {category.children.length === 0 ? (
+        <p className={s.empty}>Aucune sous-catégorie pour le moment.</p>
+      ) : (
         <div className={s.grid}>
           {category.children.map((sub) => (
             <Link key={sub.id} href={`/catalogue/${category.slug}/${sub.slug}`} className={s.card}>
@@ -46,24 +44,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
                 <h3>{sub.name}</h3>
               </div>
             </Link>
-          ))}
-        </div>
-      )}
-
-      {category.products.length > 0 && (
-        <div className={s.grid}>
-          {category.products.map((product) => (
-            <div key={product.id} className={s.card}>
-              {product.images[0] && (
-                <div className={s.cardImage}>
-                  <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
-                </div>
-              )}
-              <div className={s.cardBody}>
-                <h3>{product.name}</h3>
-                {product.description && <p>{product.description}</p>}
-              </div>
-            </div>
           ))}
         </div>
       )}
