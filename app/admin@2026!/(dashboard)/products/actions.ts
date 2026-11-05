@@ -15,29 +15,38 @@ export type ProductFormState = { error?: string };
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
   description: z.string().optional(),
-  categoryId: z.string().min(1, "La catégorie est requise."),
+  categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
   position: z.coerce.number().int().default(0),
 });
+
+function parseProductForm(formData: FormData) {
+  return schema.safeParse({
+    name: formData.get("name"),
+    description: formData.get("description") || undefined,
+    categoryIds: formData.getAll("categoryIds"),
+    position: formData.get("position"),
+  });
+}
+
+async function uploadNewImages(formData: FormData): Promise<string[]> {
+  const files = formData.getAll("images").filter((f): f is File => f instanceof File && f.size > 0);
+  return Promise.all(files.map((file) => uploadProductImage(file)));
+}
 
 export async function createProduct(
   _prevState: ProductFormState,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const parsed = schema.safeParse({
-    name: formData.get("name"),
-    description: formData.get("description") || undefined,
-    categoryId: formData.get("categoryId"),
-    position: formData.get("position"),
-  });
+  const parsed = parseProductForm(formData);
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides." };
   }
 
   try {
-    const category = await prisma.category.findUnique({ where: { id: parsed.data.categoryId } });
-    if (!category) {
-      return { error: "Catégorie introuvable." };
+    const categories = await prisma.category.findMany({ where: { id: { in: parsed.data.categoryIds } } });
+    if (categories.length !== parsed.data.categoryIds.length) {
+      return { error: "Une des catégories sélectionnées est introuvable." };
     }
 
     const slug = await uniqueSlug(parsed.data.name, async (s) => {
@@ -45,17 +54,16 @@ export async function createProduct(
       return Boolean(existing);
     });
 
-    const image = formData.get("image");
-    const imageUrl = image instanceof File && image.size > 0 ? await uploadProductImage(image) : null;
+    const imageUrls = await uploadNewImages(formData);
 
     await prisma.product.create({
       data: {
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
-        categoryId: parsed.data.categoryId,
         position: parsed.data.position,
-        imageUrl,
+        categories: { connect: parsed.data.categoryIds.map((id) => ({ id })) },
+        images: { create: imageUrls.map((url, i) => ({ url, position: i })) },
       },
     });
   } catch (err) {
@@ -72,26 +80,21 @@ export async function updateProduct(
   _prevState: ProductFormState,
   formData: FormData,
 ): Promise<ProductFormState> {
-  const parsed = schema.safeParse({
-    name: formData.get("name"),
-    description: formData.get("description") || undefined,
-    categoryId: formData.get("categoryId"),
-    position: formData.get("position"),
-  });
+  const parsed = parseProductForm(formData);
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides." };
   }
 
   try {
-    const current = await prisma.product.findUnique({ where: { id } });
+    const current = await prisma.product.findUnique({ where: { id }, include: { images: true } });
     if (!current) {
       return { error: "Produit introuvable." };
     }
 
-    const category = await prisma.category.findUnique({ where: { id: parsed.data.categoryId } });
-    if (!category) {
-      return { error: "Catégorie introuvable." };
+    const categories = await prisma.category.findMany({ where: { id: { in: parsed.data.categoryIds } } });
+    if (categories.length !== parsed.data.categoryIds.length) {
+      return { error: "Une des catégories sélectionnées est introuvable." };
     }
 
     const slug = await uniqueSlug(
@@ -103,14 +106,10 @@ export async function updateProduct(
       current.slug,
     );
 
-    const image = formData.get("image");
-    let imageUrl = current.imageUrl;
-    if (image instanceof File && image.size > 0) {
-      imageUrl = await uploadProductImage(image);
-      if (current.imageUrl) {
-        await deleteProductImage(current.imageUrl);
-      }
-    }
+    const removeImageIds = new Set(formData.getAll("removeImageIds").map(String));
+    const imagesToRemove = current.images.filter((img) => removeImageIds.has(img.id));
+    const newImageUrls = await uploadNewImages(formData);
+    const keptCount = current.images.length - imagesToRemove.length;
 
     await prisma.product.update({
       where: { id },
@@ -118,11 +117,16 @@ export async function updateProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
-        categoryId: parsed.data.categoryId,
         position: parsed.data.position,
-        imageUrl,
+        categories: { set: parsed.data.categoryIds.map((cid) => ({ id: cid })) },
+        images: {
+          deleteMany: { id: { in: [...removeImageIds] } },
+          create: newImageUrls.map((url, i) => ({ url, position: keptCount + i })),
+        },
       },
     });
+
+    await Promise.all(imagesToRemove.map((img) => deleteProductImage(img.url)));
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
@@ -133,13 +137,11 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string) {
-  const product = await prisma.product.findUnique({ where: { id } });
+  const product = await prisma.product.findUnique({ where: { id }, include: { images: true } });
   if (!product) return;
 
   await prisma.product.delete({ where: { id } });
-  if (product.imageUrl) {
-    await deleteProductImage(product.imageUrl);
-  }
+  await Promise.all(product.images.map((img) => deleteProductImage(img.url)));
 
   revalidatePath(PRODUCTS_PATH);
   revalidatePath("/catalogue");

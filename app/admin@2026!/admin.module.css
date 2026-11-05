@@ -230,6 +230,67 @@
   font-family: inherit;
 }
 
+.checkboxList {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkboxList legend {
+  padding: 0 4px;
+  font-size: 13px;
+  color: #555;
+}
+
+.checkboxItem {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.checkboxItem input {
+  width: auto;
+}
+
+.imageGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.imageThumb {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  gap: 4px;
+  width: 96px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.imageThumb img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.imageRemove {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #b42318;
+}
+
+.imageRemove input {
+  width: auto;
+}
+
 .formActions {
   display: flex;
   gap: 10px;

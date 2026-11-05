@@ -41,9 +41,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         <div className={s.grid}>
           {category.products.map((product) => (
             <div key={product.id} className={s.card}>
-              {product.imageUrl && (
+              {product.images[0] && (
                 <div className={s.cardImage}>
-                  <Image src={product.imageUrl} alt={product.name} fill sizes="220px" />
+                  <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
                 </div>
               )}
               <div className={s.cardBody}>

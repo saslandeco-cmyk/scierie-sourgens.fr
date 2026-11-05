@@ -1,12 +1,16 @@
 import { prisma } from "@/lib/prisma";
 
+const productInclude = {
+  images: { orderBy: { position: "asc" as const } },
+};
+
 export function getCategoryTree() {
   return prisma.category.findMany({
     where: { parentId: null },
     orderBy: { position: "asc" },
     include: {
       children: { orderBy: { position: "asc" } },
-      products: { orderBy: { position: "asc" } },
+      products: { orderBy: { position: "asc" }, include: productInclude },
     },
   });
 }
@@ -33,15 +37,16 @@ export function getCategoryBySlug(slug: string) {
     include: {
       parent: true,
       children: { orderBy: { position: "asc" } },
-      products: { orderBy: { position: "asc" } },
+      products: { orderBy: { position: "asc" }, include: productInclude },
     },
   });
 }
 
 export function getProductsForCategory(categoryId: string) {
   return prisma.product.findMany({
-    where: { categoryId },
+    where: { categories: { some: { id: categoryId } } },
     orderBy: { position: "asc" },
+    include: productInclude,
   });
 }
 

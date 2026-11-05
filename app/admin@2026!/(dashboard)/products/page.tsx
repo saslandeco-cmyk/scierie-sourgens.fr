@@ -9,7 +9,10 @@ export const dynamic = "force-dynamic";
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
     orderBy: { position: "asc" },
-    include: { category: { include: { parent: true } } },
+    include: {
+      categories: { include: { parent: true } },
+      images: { orderBy: { position: "asc" }, take: 1 },
+    },
   });
 
   return (
@@ -29,19 +32,19 @@ export default async function ProductsPage() {
             <tr>
               <th>Photo</th>
               <th>Nom</th>
-              <th>Catégorie</th>
+              <th>Catégories</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
               <tr key={product.id}>
-                <td>{product.imageUrl && <img src={product.imageUrl} alt={product.name} />}</td>
+                <td>{product.images[0] && <img src={product.images[0].url} alt={product.name} />}</td>
                 <td>{product.name}</td>
                 <td>
-                  {product.category.parent
-                    ? `${product.category.parent.name} > ${product.category.name}`
-                    : product.category.name}
+                  {product.categories
+                    .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
+                    .join(", ")}
                 </td>
                 <td>
                   <span className={s.treeActions}>

@@ -9,7 +9,10 @@ export const dynamic = "force-dynamic";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = await prisma.product.findUnique({ where: { id } });
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { categories: true, images: { orderBy: { position: "asc" } } },
+  });
   if (!product) {
     notFound();
   }
@@ -27,9 +30,9 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         defaults={{
           name: product.name,
           description: product.description ?? "",
-          categoryId: product.categoryId,
+          categoryIds: product.categories.map((c) => c.id),
           position: product.position,
-          imageUrl: product.imageUrl,
+          images: product.images.map((img) => ({ id: img.id, url: img.url })),
         }}
         submitLabel="Enregistrer"
       />

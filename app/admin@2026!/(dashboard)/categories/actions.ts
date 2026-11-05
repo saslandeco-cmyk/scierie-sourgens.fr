@@ -122,7 +122,7 @@ export async function updateCategory(
 
 export async function deleteCategory(id: string) {
   const childCount = await prisma.category.count({ where: { parentId: id } });
-  const productCount = await prisma.product.count({ where: { categoryId: id } });
+  const productCount = await prisma.product.count({ where: { categories: { some: { id } } } });
 
   if (childCount > 0 || productCount > 0) {
     throw new Error("Supprimez d'abord les sous-catégories et produits rattachés.");

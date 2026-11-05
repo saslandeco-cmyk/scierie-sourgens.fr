@@ -5,11 +5,18 @@ import type { ProductFormState } from "./actions";
 import s from "../../admin.module.css";
 
 export type FlatCategory = { id: string; label: string };
+export type ExistingImage = { id: string; url: string };
 
 type Props = {
   action: (prevState: ProductFormState, formData: FormData) => Promise<ProductFormState>;
   categories: FlatCategory[];
-  defaults?: { name?: string; description?: string; categoryId?: string; position?: number; imageUrl?: string | null };
+  defaults?: {
+    name?: string;
+    description?: string;
+    categoryIds?: string[];
+    position?: number;
+    images?: ExistingImage[];
+  };
   submitLabel: string;
 };
 
@@ -17,6 +24,8 @@ const initialState: ProductFormState = {};
 
 export default function ProductForm({ action, categories, defaults, submitLabel }: Props) {
   const [state, formAction, pending] = useActionState(action, initialState);
+  const selectedCategoryIds = defaults?.categoryIds ?? [];
+  const existingImages = defaults?.images ?? [];
 
   return (
     <form className={s.form} action={formAction}>
@@ -28,30 +37,48 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
         Description
         <textarea name="description" rows={4} defaultValue={defaults?.description ?? ""} />
       </label>
-      <label>
-        Catégorie / sous-catégorie
-        <select name="categoryId" defaultValue={defaults?.categoryId ?? ""} required>
-          <option value="" disabled>
-            — Choisir —
-          </option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
-            </option>
-          ))}
-        </select>
-      </label>
+
+      <fieldset className={s.checkboxList}>
+        <legend>Catégories / sous-catégories</legend>
+        {categories.map((c) => (
+          <label key={c.id} className={s.checkboxItem}>
+            <input
+              type="checkbox"
+              name="categoryIds"
+              value={c.id}
+              defaultChecked={selectedCategoryIds.includes(c.id)}
+            />
+            {c.label}
+          </label>
+        ))}
+      </fieldset>
+
       <label>
         Position
         <input type="number" name="position" defaultValue={defaults?.position ?? 0} />
       </label>
-      <label>
-        Photo {defaults?.imageUrl ? "(laisser vide pour conserver l'actuelle)" : ""}
-        <input type="file" name="image" accept="image/*" />
-      </label>
-      {defaults?.imageUrl && (
-        <img src={defaults.imageUrl} alt="" style={{ width: 96, height: 96, objectFit: "cover", borderRadius: 4 }} />
+
+      {existingImages.length > 0 && (
+        <fieldset className={s.checkboxList}>
+          <legend>Photos actuelles (cocher pour supprimer)</legend>
+          <div className={s.imageGrid}>
+            {existingImages.map((img) => (
+              <label key={img.id} className={s.imageThumb}>
+                <img src={img.url} alt="" />
+                <span className={s.imageRemove}>
+                  <input type="checkbox" name="removeImageIds" value={img.id} /> Supprimer
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
       )}
+
+      <label>
+        {existingImages.length > 0 ? "Ajouter des photos" : "Photos"}
+        <input type="file" name="images" accept="image/*" multiple />
+      </label>
+
       {state.error && <p className={s.formError}>{state.error}</p>}
       <div className={s.formActions}>
         <button type="submit" className={s.button} disabled={pending}>
