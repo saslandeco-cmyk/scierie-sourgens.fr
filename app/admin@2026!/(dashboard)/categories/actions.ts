@@ -159,6 +159,30 @@ export async function updateCategory(
   redirect(CATEGORIES_PATH);
 }
 
+export async function moveCategory(id: string, direction: "up" | "down") {
+  const current = await prisma.category.findUnique({ where: { id } });
+  if (!current) return;
+
+  const siblings = await prisma.category.findMany({
+    where: { parentId: current.parentId },
+    orderBy: { position: "asc" },
+  });
+
+  const index = siblings.findIndex((c) => c.id === id);
+  const swapIndex = direction === "up" ? index - 1 : index + 1;
+  if (index === -1 || swapIndex < 0 || swapIndex >= siblings.length) return;
+
+  const other = siblings[swapIndex];
+  await prisma.$transaction([
+    prisma.category.update({ where: { id: current.id }, data: { position: other.position } }),
+    prisma.category.update({ where: { id: other.id }, data: { position: current.position } }),
+  ]);
+
+  revalidatePath(CATEGORIES_PATH);
+  revalidatePath("/catalogue");
+  revalidatePath("/");
+}
+
 export async function deleteCategory(id: string) {
   const childCount = await prisma.category.count({ where: { parentId: id } });
   const productCount = await prisma.product.count({ where: { categories: { some: { id } } } });

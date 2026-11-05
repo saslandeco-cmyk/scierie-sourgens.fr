@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { deleteCategory } from "./actions";
+import { deleteCategory, moveCategory } from "./actions";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
 import s from "../../admin.module.css";
 
@@ -25,13 +25,42 @@ export default async function CategoriesPage() {
         </Link>
       </div>
 
+      <p className={s.empty}>
+        Utilisez les flèches ▲▼ pour changer l'ordre d'affichage dans le menu déroulant du site.
+      </p>
+
       {categories.length === 0 && <p className={s.empty}>Aucune catégorie pour le moment.</p>}
 
       <ul className={s.tree}>
-        {categories.map((category) => (
+        {categories.map((category, i) => (
           <li key={category.id}>
             <div className={s.treeItem}>
-              <span>
+              <span className={s.reorderGroup}>
+                <form
+                  action={async () => {
+                    "use server";
+                    await moveCategory(category.id, "up");
+                  }}
+                >
+                  <button type="submit" className={s.reorderButton} disabled={i === 0} aria-label="Monter">
+                    ▲
+                  </button>
+                </form>
+                <form
+                  action={async () => {
+                    "use server";
+                    await moveCategory(category.id, "down");
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className={s.reorderButton}
+                    disabled={i === categories.length - 1}
+                    aria-label="Descendre"
+                  >
+                    ▼
+                  </button>
+                </form>
                 {category.name} ({category.products.length} produit(s))
               </span>
               <span className={s.treeActions}>
@@ -60,9 +89,34 @@ export default async function CategoriesPage() {
                   Sous-catégories ({category.children.length})
                 </summary>
                 <ul className={s.treeChildren}>
-                  {category.children.map((sub) => (
+                  {category.children.map((sub, j) => (
                     <li key={sub.id} className={s.treeItem}>
-                      <span>
+                      <span className={s.reorderGroup}>
+                        <form
+                          action={async () => {
+                            "use server";
+                            await moveCategory(sub.id, "up");
+                          }}
+                        >
+                          <button type="submit" className={s.reorderButton} disabled={j === 0} aria-label="Monter">
+                            ▲
+                          </button>
+                        </form>
+                        <form
+                          action={async () => {
+                            "use server";
+                            await moveCategory(sub.id, "down");
+                          }}
+                        >
+                          <button
+                            type="submit"
+                            className={s.reorderButton}
+                            disabled={j === category.children.length - 1}
+                            aria-label="Descendre"
+                          >
+                            ▼
+                          </button>
+                        </form>
                         {sub.name} ({sub.products.length} produit(s))
                       </span>
                       <span className={s.treeActions}>

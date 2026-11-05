@@ -171,6 +171,29 @@
   gap: 12px;
 }
 
+.reorderGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reorderButton {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.reorderButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
 .accordion {
   margin: 4px 0 8px;
 }
