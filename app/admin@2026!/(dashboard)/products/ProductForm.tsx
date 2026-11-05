@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import type { ProductFormState } from "./actions";
+import ImagePicker from "./ImagePicker";
 import s from "../../admin.module.css";
 
 export type FlatCategory = { id: string; label: string };
@@ -74,10 +75,7 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
         </fieldset>
       )}
 
-      <label>
-        {existingImages.length > 0 ? "Ajouter des photos" : "Photos"}
-        <input type="file" name="images" accept="image/*" multiple />
-      </label>
+      <ImagePicker name="images" label={existingImages.length > 0 ? "Ajouter des photos" : "Photos"} />
 
       {state.error && <p className={s.formError}>{state.error}</p>}
       <div className={s.formActions}>
