@@ -177,7 +177,7 @@
   margin: 0 auto;
   padding: 36px clamp(16px, 5vw, 64px);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0 48px;
   align-items: start;
 }
