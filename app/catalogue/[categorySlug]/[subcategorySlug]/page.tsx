@@ -1,0 +1,50 @@
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { getCategoryBySlug } from "@/lib/catalog";
+import s from "../../catalogue.module.css";
+
+export const dynamic = "force-dynamic";
+
+export default async function SubcategoryPage({
+  params,
+}: {
+  params: Promise<{ categorySlug: string; subcategorySlug: string }>;
+}) {
+  const { categorySlug, subcategorySlug } = await params;
+  const subcategory = await getCategoryBySlug(subcategorySlug);
+
+  if (!subcategory || subcategory.parent?.slug !== categorySlug) {
+    notFound();
+  }
+
+  return (
+    <div className={s.wrap}>
+      <p className={s.breadcrumb}>
+        <Link href="/catalogue">Catalogue</Link> /{" "}
+        <Link href={`/catalogue/${categorySlug}`}>{subcategory.parent?.name}</Link> / {subcategory.name}
+      </p>
+      <h1 className={s.title}>{subcategory.name}</h1>
+
+      {subcategory.products.length === 0 ? (
+        <p className={s.empty}>Aucun produit pour le moment.</p>
+      ) : (
+        <div className={s.grid}>
+          {subcategory.products.map((product) => (
+            <div key={product.id} className={s.card}>
+              {product.imageUrl && (
+                <div className={s.cardImage}>
+                  <Image src={product.imageUrl} alt={product.name} fill sizes="220px" />
+                </div>
+              )}
+              <div className={s.cardBody}>
+                <h3>{product.name}</h3>
+                {product.description && <p>{product.description}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
