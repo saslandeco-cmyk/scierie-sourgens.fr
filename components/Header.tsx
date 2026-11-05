@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   CladdingIcon,
   DeckIcon,
@@ -15,10 +16,10 @@ import {
 import s from "./home.module.css";
 
 const links = [
-  { href: "#accueil", label: "Accueil" },
-  { href: "#histoire", label: "Notre histoire" },
+  { href: "/#accueil", label: "Accueil" },
+  { href: "/#histoire", label: "Notre histoire" },
   { href: "/catalogue", label: "Catalogue" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 type NavSubcategory = { id: string; name: string; slug: string };
@@ -36,8 +37,11 @@ function CategoryIcon({ slug, className }: { slug: string; className?: string })
 }
 
 export default function Header({ categories = [] }: { categories?: NavCategory[] }) {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("#accueil");
+  const [active, setActive] = useState(onHome ? "/#accueil" : "");
   const [productsOpen, setProductsOpen] = useState(false);
 
   const closeAll = () => {
@@ -45,9 +49,14 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
     setProductsOpen(false);
   };
 
+  const isActive = (href: string) => {
+    if (href === "/catalogue") return pathname.startsWith("/catalogue");
+    return onHome && active === href;
+  };
+
   return (
     <header className={s.header}>
-      <Link href="#accueil" className={s.brand} aria-label="Scierie R. Sourgens — accueil">
+      <Link href="/#accueil" className={s.brand} aria-label="Scierie R. Sourgens — accueil">
         <PineCone className={s.brandCone} />
         <span className={s.brandText}>
           <span className={s.brandName}>Scierie R. Sourgens</span>
@@ -68,10 +77,10 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
 
       <nav className={`${s.nav} ${open ? s.navOpen : ""}`}>
         <a
-          href="#accueil"
-          className={active === "#accueil" ? s.navActive : undefined}
+          href="/#accueil"
+          className={isActive("/#accueil") ? s.navActive : undefined}
           onClick={() => {
-            setActive("#accueil");
+            setActive("/#accueil");
             closeAll();
           }}
         >
@@ -85,10 +94,10 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
         >
           <span className={s.navItemRow}>
             <a
-              href="#produits"
-              className={active === "#produits" ? s.navActive : undefined}
+              href="/#produits"
+              className={isActive("/#produits") ? s.navActive : undefined}
               onClick={() => {
-                setActive("#produits");
+                setActive("/#produits");
                 closeAll();
               }}
             >
@@ -138,12 +147,12 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
         </div>
 
         {links
-          .filter((l) => l.href !== "#accueil")
+          .filter((l) => l.href !== "/#accueil")
           .map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className={active === l.href ? s.navActive : undefined}
+              className={isActive(l.href) ? s.navActive : undefined}
               onClick={() => {
                 setActive(l.href);
                 closeAll();

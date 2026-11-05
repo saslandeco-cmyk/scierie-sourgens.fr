@@ -1,7 +1,15 @@
 .wrap {
   max-width: 1080px;
   margin: 0 auto;
-  padding: 48px 24px 80px;
+  /* top padding clears the fixed-height overlay header (position: absolute,
+     designed to float over the homepage hero photo) on pages with no hero */
+  padding: 128px 24px 80px;
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    padding-top: 108px;
+  }
 }
 
 .breadcrumb {
