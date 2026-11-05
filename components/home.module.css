@@ -176,12 +176,13 @@
   max-width: 1500px;
   margin: 0 auto;
   padding: 36px clamp(16px, 5vw, 64px);
-  column-count: 4;
-  column-gap: 48px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 48px;
+  align-items: start;
 }
 
 .dropdownPanel > ul > li {
-  break-inside: avoid-column;
   margin-bottom: 28px;
 }
 
@@ -231,7 +232,7 @@
 
 @media (max-width: 1240px) {
   .dropdownPanel > ul {
-    column-count: 3;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -841,8 +842,8 @@
 
   .dropdownPanel > ul {
     max-width: none;
-    column-count: 1;
-    column-gap: 0;
+    grid-template-columns: 1fr;
+    gap: 0;
     margin: 0;
     padding: 0;
   }
