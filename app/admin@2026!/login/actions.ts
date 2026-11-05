@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { ADMIN_BASE_PATH, createSessionToken, SESSION_COOKIE } from "@/lib/auth";
 
 const schema = z.object({
   username: z.string().min(1),
@@ -48,5 +48,5 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     maxAge: 60 * 60 * 24 * 7,
   });
 
-  redirect("/admin");
+  redirect(ADMIN_BASE_PATH);
 }

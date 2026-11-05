@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteProduct } from "./actions";
+import { ADMIN_BASE_PATH } from "@/lib/auth";
 import s from "../../admin.module.css";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export default async function ProductsPage() {
     <div>
       <div className={s.pageHeader}>
         <h1>Produits</h1>
-        <Link href="/admin/products/new" className={s.button}>
+        <Link href={`${ADMIN_BASE_PATH}/products/new`} className={s.button}>
           Nouveau produit
         </Link>
       </div>
@@ -44,7 +45,7 @@ export default async function ProductsPage() {
                 </td>
                 <td>
                   <span className={s.treeActions}>
-                    <Link href={`/admin/products/${product.id}/edit`} className={`${s.button} ${s.buttonSecondary}`}>
+                    <Link href={`${ADMIN_BASE_PATH}/products/${product.id}/edit`} className={`${s.button} ${s.buttonSecondary}`}>
                       Modifier
                     </Link>
                     <form

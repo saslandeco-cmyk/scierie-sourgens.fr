@@ -2,6 +2,8 @@ import { SignJWT, jwtVerify } from "jose";
 
 export const SESSION_COOKIE = "admin_session";
 
+export const ADMIN_BASE_PATH = "/admin@2026!";
+
 function getSecretKey() {
   const secret = process.env.SESSION_SECRET;
   if (!secret) {

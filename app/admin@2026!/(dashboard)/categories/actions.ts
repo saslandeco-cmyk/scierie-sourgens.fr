@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { slugify, uniqueSlug } from "@/lib/slug";
+import { ADMIN_BASE_PATH } from "@/lib/auth";
+
+const CATEGORIES_PATH = `${ADMIN_BASE_PATH}/categories`;
 
 export type CategoryFormState = { error?: string };
 
@@ -54,9 +57,9 @@ export async function createCategory(
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
 
-  revalidatePath("/admin/categories");
+  revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
-  redirect("/admin/categories");
+  redirect(CATEGORIES_PATH);
 }
 
 export async function updateCategory(
@@ -110,9 +113,9 @@ export async function updateCategory(
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
 
-  revalidatePath("/admin/categories");
+  revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
-  redirect("/admin/categories");
+  redirect(CATEGORIES_PATH);
 }
 
 export async function deleteCategory(id: string) {
@@ -124,6 +127,6 @@ export async function deleteCategory(id: string) {
   }
 
   await prisma.category.delete({ where: { id } });
-  revalidatePath("/admin/categories");
+  revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
 }

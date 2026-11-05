@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ADMIN_BASE_PATH } from "@/lib/auth";
 import s from "../admin.module.css";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +21,10 @@ export default async function AdminHomePage() {
         <p>{categoryCount} catégorie(s), {subcategoryCount} sous-catégorie(s), {productCount} produit(s).</p>
       </div>
       <div className={s.formActions}>
-        <Link href="/admin/categories" className={s.button}>
+        <Link href={`${ADMIN_BASE_PATH}/categories`} className={s.button}>
           Gérer les catégories
         </Link>
-        <Link href="/admin/products" className={s.button}>
+        <Link href={`${ADMIN_BASE_PATH}/products`} className={s.button}>
           Gérer les produits
         </Link>
       </div>

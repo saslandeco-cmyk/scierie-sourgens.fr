@@ -6,6 +6,9 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { uniqueSlug } from "@/lib/slug";
 import { deleteProductImage, uploadProductImage } from "@/lib/blob";
+import { ADMIN_BASE_PATH } from "@/lib/auth";
+
+const PRODUCTS_PATH = `${ADMIN_BASE_PATH}/products`;
 
 export type ProductFormState = { error?: string };
 
@@ -59,9 +62,9 @@ export async function createProduct(
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
 
-  revalidatePath("/admin/products");
+  revalidatePath(PRODUCTS_PATH);
   revalidatePath("/catalogue");
-  redirect("/admin/products");
+  redirect(PRODUCTS_PATH);
 }
 
 export async function updateProduct(
@@ -124,9 +127,9 @@ export async function updateProduct(
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
 
-  revalidatePath("/admin/products");
+  revalidatePath(PRODUCTS_PATH);
   revalidatePath("/catalogue");
-  redirect("/admin/products");
+  redirect(PRODUCTS_PATH);
 }
 
 export async function deleteProduct(id: string) {
@@ -138,6 +141,6 @@ export async function deleteProduct(id: string) {
     await deleteProductImage(product.imageUrl);
   }
 
-  revalidatePath("/admin/products");
+  revalidatePath(PRODUCTS_PATH);
   revalidatePath("/catalogue");
 }

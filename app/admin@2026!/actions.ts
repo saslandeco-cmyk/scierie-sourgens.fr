@@ -2,10 +2,10 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { SESSION_COOKIE } from "@/lib/auth";
+import { ADMIN_BASE_PATH, SESSION_COOKIE } from "@/lib/auth";
 
 export async function logout() {
   const store = await cookies();
   store.delete(SESSION_COOKIE);
-  redirect("/admin/login");
+  redirect(`${ADMIN_BASE_PATH}/login`);
 }
