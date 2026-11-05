@@ -109,6 +109,121 @@
 }
 
 /* =========================================================
+   NAV — MENU DÉROULANT "NOS PRODUITS"
+   ========================================================= */
+.navItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.navItemRow {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.navCaret {
+  background: none;
+  border: 0;
+  color: inherit;
+  opacity: 0.85;
+  font-size: 10px;
+  padding: 6px 2px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Positioned against .header (full-bleed, inset: 0 0 auto 0) rather than
+   .navItem, so the mega-menu spans the whole viewport regardless of where
+   "Nos produits" sits in the nav. */
+.dropdownPanel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(22, 24, 18, 0.98);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+  z-index: 30;
+}
+
+@media (hover: hover) {
+  .navItem:hover .dropdownPanel,
+  .navItem:focus-within .dropdownPanel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+.dropdownPanelOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdownPanel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdownPanel > ul {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 36px clamp(16px, 5vw, 64px);
+  column-count: 4;
+  column-gap: 48px;
+}
+
+.dropdownPanel > ul > li {
+  break-inside: avoid-column;
+  margin-bottom: 28px;
+}
+
+.dropdownPanel > ul > li > a {
+  display: block;
+  padding: 0 0 10px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: normal;
+  border-bottom: 1px solid rgba(246, 239, 224, 0.2);
+  opacity: 0.95;
+}
+
+.dropdownPanel > ul > li > a:hover {
+  opacity: 1;
+}
+
+.dropdownPanel ul ul {
+  padding-bottom: 0;
+}
+
+.dropdownPanel ul ul a {
+  padding: 6px 0;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: normal;
+  opacity: 0.78;
+}
+
+.dropdownPanel ul ul a:hover {
+  opacity: 1;
+}
+
+@media (max-width: 1240px) {
+  .dropdownPanel > ul {
+    column-count: 3;
+  }
+}
+
+/* =========================================================
    HERO
    ========================================================= */
 .hero {
@@ -687,6 +802,51 @@
   .nav a {
     padding: 12px 0;
     border-bottom: 1px solid rgba(246, 239, 224, 0.12);
+  }
+
+  .navItem {
+    width: 100%;
+  }
+
+  .dropdownPanel {
+    position: static;
+    min-width: 0;
+    margin-top: 0;
+    padding: 0 0 4px;
+    background: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+  }
+
+  .dropdownPanelOpen {
+    max-height: 1000px;
+  }
+
+  .dropdownPanel > ul {
+    max-width: none;
+    column-count: 1;
+    column-gap: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dropdownPanel > ul > li {
+    margin-bottom: 4px;
+  }
+
+  .dropdownPanel > ul > li > a,
+  .dropdownPanel ul ul a {
+    padding-left: 12px;
+    border-bottom: 0;
+  }
+
+  .dropdownPanel ul ul a {
+    padding-left: 28px;
   }
 
   .hero {

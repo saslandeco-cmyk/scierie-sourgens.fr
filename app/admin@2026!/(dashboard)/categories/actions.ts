@@ -59,6 +59,7 @@ export async function createCategory(
 
   revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
+  revalidatePath("/");
   redirect(CATEGORIES_PATH);
 }
 
@@ -115,6 +116,7 @@ export async function updateCategory(
 
   revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
+  revalidatePath("/");
   redirect(CATEGORIES_PATH);
 }
 
@@ -129,4 +131,5 @@ export async function deleteCategory(id: string) {
   await prisma.category.delete({ where: { id } });
   revalidatePath(CATEGORIES_PATH);
   revalidatePath("/catalogue");
+  revalidatePath("/");
 }

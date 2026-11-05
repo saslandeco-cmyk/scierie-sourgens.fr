@@ -11,6 +11,22 @@ export function getCategoryTree() {
   });
 }
 
+export function getNavCategories() {
+  return prisma.category.findMany({
+    where: { parentId: null },
+    orderBy: { position: "asc" },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      children: {
+        orderBy: { position: "asc" },
+        select: { id: true, name: true, slug: true },
+      },
+    },
+  });
+}
+
 export function getCategoryBySlug(slug: string) {
   return prisma.category.findUnique({
     where: { slug },

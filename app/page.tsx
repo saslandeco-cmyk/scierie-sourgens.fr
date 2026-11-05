@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Header from "@/components/Header";
+import { getNavCategories } from "@/lib/catalog";
 import {
   ArrowRight,
   CladdingIcon,
@@ -35,10 +36,12 @@ const products = [
   { img: "/images/pin-des-landes.jpg", Icon: PineCone, label: ["Entretien du bois ", "et quincaillerie"] },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const navCategories = await getNavCategories().catch(() => []);
+
   return (
     <>
-      <Header />
+      <Header categories={navCategories} />
 
       <main>
         {/* ---------------- HERO ---------------- */}
