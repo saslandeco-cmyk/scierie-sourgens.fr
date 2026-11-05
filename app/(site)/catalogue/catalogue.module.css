@@ -49,9 +49,11 @@
 }
 
 .description {
-  margin: -16px 0 32px;
+  box-sizing: border-box;
+  width: 100vw;
+  margin: -16px calc(50% - 50vw) 32px;
+  padding: 0 24px;
   color: #555;
-  max-width: 720px;
   line-height: 1.6;
 }
 
