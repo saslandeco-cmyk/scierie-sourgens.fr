@@ -55,30 +55,35 @@ export default async function CategoriesPage() {
             </div>
 
             {category.children.length > 0 && (
-              <ul className={s.treeChildren}>
-                {category.children.map((sub) => (
-                  <li key={sub.id} className={s.treeItem}>
-                    <span>
-                      {sub.name} ({sub.products.length} produit(s))
-                    </span>
-                    <span className={s.treeActions}>
-                      <Link href={`${ADMIN_BASE_PATH}/categories/${sub.id}/edit`} className={`${s.button} ${s.buttonSecondary}`}>
-                        Modifier
-                      </Link>
-                      <form
-                        action={async () => {
-                          "use server";
-                          await deleteCategory(sub.id);
-                        }}
-                      >
-                        <button type="submit" className={`${s.button} ${s.buttonDanger}`}>
-                          Supprimer
-                        </button>
-                      </form>
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <details className={s.accordion}>
+                <summary>
+                  Sous-catégories ({category.children.length})
+                </summary>
+                <ul className={s.treeChildren}>
+                  {category.children.map((sub) => (
+                    <li key={sub.id} className={s.treeItem}>
+                      <span>
+                        {sub.name} ({sub.products.length} produit(s))
+                      </span>
+                      <span className={s.treeActions}>
+                        <Link href={`${ADMIN_BASE_PATH}/categories/${sub.id}/edit`} className={`${s.button} ${s.buttonSecondary}`}>
+                          Modifier
+                        </Link>
+                        <form
+                          action={async () => {
+                            "use server";
+                            await deleteCategory(sub.id);
+                          }}
+                        >
+                          <button type="submit" className={`${s.button} ${s.buttonDanger}`}>
+                            Supprimer
+                          </button>
+                        </form>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
             )}
           </li>
         ))}

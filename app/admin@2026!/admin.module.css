@@ -171,9 +171,35 @@
   gap: 12px;
 }
 
+.accordion {
+  margin: 4px 0 8px;
+}
+
+.accordion summary {
+  cursor: pointer;
+  padding: 8px 0;
+  font-size: 13px;
+  color: #555;
+  list-style: none;
+}
+
+.accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion summary::before {
+  content: "▸ ";
+  display: inline-block;
+  transition: transform 0.15s;
+}
+
+.accordion[open] summary::before {
+  transform: rotate(90deg);
+}
+
 .treeChildren {
   list-style: none;
-  margin: 4px 0 8px 24px;
+  margin: 0 0 8px 24px;
   padding: 0;
 }
 
