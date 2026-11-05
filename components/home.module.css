@@ -151,13 +151,12 @@
   z-index: 30;
 }
 
-@media (hover: hover) {
-  .navItem:hover .dropdownPanel,
-  .navItem:focus-within .dropdownPanel {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+/* Hover-to-open is handled in JS (onMouseEnter/onMouseLeave) so it can be
+   reset on click; only :focus-within stays CSS-driven, for keyboard nav. */
+.navItem:focus-within .dropdownPanel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .dropdownPanelOpen {

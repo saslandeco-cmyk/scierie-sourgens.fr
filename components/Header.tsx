@@ -47,6 +47,9 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
   const closeAll = () => {
     setOpen(false);
     setProductsOpen(false);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   };
 
   const isActive = (href: string) => {
