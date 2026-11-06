@@ -9,30 +9,32 @@ datasource db {
 }
 
 model Category {
-  id          String     @id @default(cuid())
-  name        String
-  slug        String     @unique
-  description String?
-  bannerUrl   String?
-  position    Int        @default(0)
-  parentId    String?
-  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
-  children    Category[] @relation("CategoryTree")
-  products    Product[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id                String     @id @default(cuid())
+  name              String
+  slug              String     @unique
+  description       String?
+  bannerUrl         String?
+  position          Int        @default(0)
+  parentId          String?
+  parent            Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children          Category[] @relation("CategoryTree")
+  products          Product[]  @relation("CategoryProducts")
+  suggestedProducts Product[]  @relation("CategorySuggestedProducts")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 }
 
 model Product {
-  id          String         @id @default(cuid())
-  name        String
-  slug        String         @unique
-  description String?
-  position    Int            @default(0)
-  categories  Category[]
-  images      ProductImage[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id                    String         @id @default(cuid())
+  name                  String
+  slug                  String         @unique
+  description           String?
+  position              Int            @default(0)
+  categories            Category[]     @relation("CategoryProducts")
+  suggestedInCategories Category[]     @relation("CategorySuggestedProducts")
+  images                ProductImage[]
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
 }
 
 model ProductImage {

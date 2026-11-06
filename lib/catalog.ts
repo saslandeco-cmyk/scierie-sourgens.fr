@@ -38,6 +38,7 @@ export function getCategoryBySlug(slug: string) {
       parent: true,
       children: { orderBy: { position: "asc" } },
       products: { orderBy: { position: "asc" }, include: productInclude },
+      suggestedProducts: { orderBy: { position: "asc" }, include: productInclude },
     },
   });
 }
@@ -47,6 +48,13 @@ export function getProductsForCategory(categoryId: string) {
     where: { categories: { some: { id: categoryId } } },
     orderBy: { position: "asc" },
     include: productInclude,
+  });
+}
+
+export function getAllProductOptions() {
+  return prisma.product.findMany({
+    orderBy: { name: "asc" },
+    select: { id: true, name: true },
   });
 }
 

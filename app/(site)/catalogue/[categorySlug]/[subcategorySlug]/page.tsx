@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
 import ProductGallery from "../../ProductGallery";
@@ -42,6 +43,27 @@ export default async function SubcategoryPage({
             </div>
           ))}
         </div>
+      )}
+
+      {subcategory.suggestedProducts.length > 0 && (
+        <>
+          <h2 className={s.title}>Vous pourriez avoir besoin de :</h2>
+          <div className={s.grid}>
+            {subcategory.suggestedProducts.map((product) => (
+              <div key={product.id} className={s.card}>
+                {product.images[0] && (
+                  <div className={s.cardImage}>
+                    <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
+                  </div>
+                )}
+                <div className={s.cardBody}>
+                  <h3>{product.name}</h3>
+                  {product.description && <p>{product.description}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

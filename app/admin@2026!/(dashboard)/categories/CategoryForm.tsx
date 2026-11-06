@@ -5,23 +5,26 @@ import type { CategoryFormState } from "./actions";
 import s from "../../admin.module.css";
 
 type RootCategory = { id: string; name: string };
+type ProductOption = { id: string; name: string };
 
 type Props = {
   action: (prevState: CategoryFormState, formData: FormData) => Promise<CategoryFormState>;
   rootCategories: RootCategory[];
+  allProducts?: ProductOption[];
   defaults?: {
     name?: string;
     description?: string;
     position?: number;
     parentId?: string | null;
     bannerUrl?: string | null;
+    suggestedProductIds?: string[];
   };
   submitLabel: string;
 };
 
 const initialState: CategoryFormState = {};
 
-export default function CategoryForm({ action, rootCategories, defaults, submitLabel }: Props) {
+export default function CategoryForm({ action, rootCategories, allProducts, defaults, submitLabel }: Props) {
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
@@ -67,6 +70,25 @@ export default function CategoryForm({ action, rootCategories, defaults, submitL
         {defaults?.bannerUrl ? "Remplacer la bannière" : "Bannière"}
         <input type="file" name="banner" accept="image/*" />
       </label>
+
+      {allProducts && allProducts.length > 0 && (
+        <fieldset className={s.checkboxList}>
+          <legend>
+            Produits additionnels (affichés en front-office sous « Vous pourriez avoir besoin de : »)
+          </legend>
+          {allProducts.map((p) => (
+            <label key={p.id} className={s.checkboxItem}>
+              <input
+                type="checkbox"
+                name="suggestedProductIds"
+                value={p.id}
+                defaultChecked={defaults?.suggestedProductIds?.includes(p.id)}
+              />
+              {p.name}
+            </label>
+          ))}
+        </fieldset>
+      )}
 
       {state.error && <p className={s.formError}>{state.error}</p>}
       <div className={s.formActions}>

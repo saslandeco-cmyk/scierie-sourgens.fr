@@ -138,6 +138,8 @@ export async function updateCategory(
       bannerUrl = null;
     }
 
+    const suggestedProductIds = formData.getAll("suggestedProductIds").map(String);
+
     await prisma.category.update({
       where: { id },
       data: {
@@ -147,6 +149,7 @@ export async function updateCategory(
         position: parsed.data.position,
         parentId,
         bannerUrl,
+        suggestedProducts: { set: suggestedProductIds.map((pid) => ({ id: pid })) },
       },
     });
   } catch (err) {
