@@ -9,5 +9,5 @@ export function formatPrice(price: number | null | undefined, priceUnit: string 
     return priceUnit.charAt(0).toUpperCase() + priceUnit.slice(1);
   }
   if (price == null) return null;
-  return priceUnit ? `${price.toFixed(2)} € / ${priceUnit}` : `${price.toFixed(2)} €`;
+  return priceUnit ? `${price.toFixed(2)} € TTC / ${priceUnit}` : `${price.toFixed(2)} € TTC`;
 }
