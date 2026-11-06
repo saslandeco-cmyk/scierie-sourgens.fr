@@ -183,8 +183,7 @@
   color: #666;
 }
 
-.productBody p.priceTag,
-.cardBody p.priceTag {
+.priceTag {
   color: #2e3022;
   font-weight: 700;
 }

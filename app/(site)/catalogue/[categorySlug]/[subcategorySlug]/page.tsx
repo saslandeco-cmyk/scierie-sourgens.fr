@@ -39,9 +39,14 @@ export default async function SubcategoryPage({
               <ProductGallery images={product.images} name={product.name} />
               <div className={s.productBody}>
                 <h3>{product.name}</h3>
-                {product.dimensions && <p>{product.dimensions}</p>}
-                {formatPrice(product.price, product.priceUnit) && (
-                  <p className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</p>
+                {(product.dimensions || formatPrice(product.price, product.priceUnit)) && (
+                  <p>
+                    {product.dimensions}
+                    {product.dimensions && formatPrice(product.price, product.priceUnit) && " · "}
+                    {formatPrice(product.price, product.priceUnit) && (
+                      <span className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
+                    )}
+                  </p>
                 )}
                 {product.description && <p>{product.description}</p>}
               </div>
@@ -63,9 +68,14 @@ export default async function SubcategoryPage({
                 )}
                 <div className={s.cardBody}>
                   <h3>{product.name}</h3>
-                  {product.dimensions && <p>{product.dimensions}</p>}
-                  {formatPrice(product.price, product.priceUnit) && (
-                    <p className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</p>
+                  {(product.dimensions || formatPrice(product.price, product.priceUnit)) && (
+                    <p>
+                      {product.dimensions}
+                      {product.dimensions && formatPrice(product.price, product.priceUnit) && " · "}
+                      {formatPrice(product.price, product.priceUnit) && (
+                        <span className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
+                      )}
+                    </p>
                   )}
                   {product.description && <p>{product.description}</p>}
                 </div>
