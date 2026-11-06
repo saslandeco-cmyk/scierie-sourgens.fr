@@ -47,7 +47,7 @@ export default async function SubcategoryPage({
 
       {subcategory.suggestedProducts.length > 0 && (
         <>
-          <h2 className={s.title}>Vous pourriez avoir besoin de :</h2>
+          <h2 className={`${s.title} ${s.suggestedTitle}`}>Vous pourriez avoir besoin de :</h2>
           <div className={s.grid}>
             {subcategory.suggestedProducts.map((product) => (
               <div key={product.id} className={s.card}>
