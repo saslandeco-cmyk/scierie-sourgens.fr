@@ -50,6 +50,7 @@
 
 .suggestedTitle {
   width: 100vw;
+  margin-top: 50px;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding: 32px calc(5vw + 24px) 0;
