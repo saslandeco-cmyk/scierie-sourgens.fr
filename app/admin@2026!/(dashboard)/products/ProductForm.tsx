@@ -14,7 +14,6 @@ type Props = {
   defaults?: {
     name?: string;
     description?: string;
-    price?: number | null;
     categoryIds?: string[];
     position?: number;
     images?: ExistingImage[];
@@ -38,10 +37,6 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       <label>
         Description
         <textarea name="description" rows={4} defaultValue={defaults?.description ?? ""} />
-      </label>
-      <label>
-        Prix (€)
-        <input type="number" name="price" step="0.01" min="0" defaultValue={defaults?.price ?? ""} />
       </label>
 
       <fieldset className={s.checkboxList}>
