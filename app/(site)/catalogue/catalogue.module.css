@@ -114,7 +114,7 @@
 
 .productImage {
   position: relative;
-  width: 40vw;
+  width: 25vw;
   flex-shrink: 0;
   background: #e8e5db;
 }
