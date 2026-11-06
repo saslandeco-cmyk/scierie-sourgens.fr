@@ -21,12 +21,12 @@ export async function exportProductsCsv(): Promise<string> {
     description: product.description ?? "",
     categories: product.categories
       .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
-      .join("; "),
-    images: product.images.map((img) => img.url).join("; "),
+      .join(" | "),
+    images: product.images.map((img) => img.url).join(" | "),
     position: String(product.position),
   }));
 
-  return stringify(rows, { header: true, columns: CSV_COLUMNS as unknown as string[] });
+  return stringify(rows, { header: true, columns: CSV_COLUMNS as unknown as string[], quoted: true });
 }
 
 export type ImportRowResult = { row: number; name: string; status: "created" | "updated" | "error"; message?: string };
@@ -63,7 +63,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
 
     try {
       const categoryLabels = (record.categories ?? "")
-        .split(";")
+        .split("|")
         .map((l) => l.trim())
         .filter(Boolean);
 
@@ -87,7 +87,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
       }
 
       const imageUrls = (record.images ?? "")
-        .split(";")
+        .split("|")
         .map((u) => u.trim())
         .filter(Boolean);
 

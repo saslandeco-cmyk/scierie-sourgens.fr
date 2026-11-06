@@ -17,8 +17,8 @@ export default function ImportProductsPage() {
 
       <p className={s.empty}>
         Colonnes attendues : <code>name</code>, <code>description</code>, <code>categories</code> (séparées par
-        « ; », ex. « Aménagement intérieur » ou « Aménagement intérieur &gt; Parquet »), <code>images</code>{" "}
-        (URLs séparées par « ; »), <code>position</code>. Un produit dont le nom correspond exactement à un
+        « | », ex. « Aménagement intérieur » ou « Aménagement intérieur &gt; Parquet »), <code>images</code>{" "}
+        (URLs séparées par « | »), <code>position</code>. Un produit dont le nom correspond exactement à un
         produit existant sera mis à jour ; sinon il sera créé.
       </p>
 
