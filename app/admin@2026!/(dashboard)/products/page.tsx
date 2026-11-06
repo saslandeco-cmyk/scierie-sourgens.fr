@@ -19,9 +19,17 @@ export default async function ProductsPage() {
     <div>
       <div className={s.pageHeader}>
         <h1>Produits</h1>
-        <Link href={`${ADMIN_BASE_PATH}/products/new`} className={s.button}>
-          Nouveau produit
-        </Link>
+        <span className={s.treeActions}>
+          <a href={`${ADMIN_BASE_PATH}/products/export`} className={`${s.button} ${s.buttonSecondary}`}>
+            Exporter (CSV)
+          </a>
+          <Link href={`${ADMIN_BASE_PATH}/products/import`} className={`${s.button} ${s.buttonSecondary}`}>
+            Importer (CSV)
+          </Link>
+          <Link href={`${ADMIN_BASE_PATH}/products/new`} className={s.button}>
+            Nouveau produit
+          </Link>
+        </span>
       </div>
 
       {products.length === 0 ? (
