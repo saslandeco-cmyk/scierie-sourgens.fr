@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
+import { formatPrice } from "@/lib/priceUnits";
 import ProductGallery from "../../ProductGallery";
 import s from "../../catalogue.module.css";
 
@@ -38,6 +39,10 @@ export default async function SubcategoryPage({
               <ProductGallery images={product.images} name={product.name} />
               <div className={s.productBody}>
                 <h3>{product.name}</h3>
+                {product.dimensions && <p>{product.dimensions}</p>}
+                {formatPrice(product.price, product.priceUnit) && (
+                  <p className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</p>
+                )}
                 {product.description && <p>{product.description}</p>}
               </div>
             </div>
@@ -58,6 +63,10 @@ export default async function SubcategoryPage({
                 )}
                 <div className={s.cardBody}>
                   <h3>{product.name}</h3>
+                  {product.dimensions && <p>{product.dimensions}</p>}
+                  {formatPrice(product.price, product.priceUnit) && (
+                    <p className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</p>
+                  )}
                   {product.description && <p>{product.description}</p>}
                 </div>
               </div>

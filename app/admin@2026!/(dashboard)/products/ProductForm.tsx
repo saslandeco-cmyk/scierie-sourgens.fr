@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { ProductFormState } from "./actions";
 import ImagePicker from "./ImagePicker";
+import { PRICE_UNITS } from "@/lib/priceUnits";
 import s from "../../admin.module.css";
 
 export type FlatCategory = { id: string; label: string };
@@ -14,6 +15,9 @@ type Props = {
   defaults?: {
     name?: string;
     description?: string;
+    dimensions?: string;
+    price?: number | null;
+    priceUnit?: string | null;
     categoryIds?: string[];
     position?: number;
     images?: ExistingImage[];
@@ -37,6 +41,25 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       <label>
         Description
         <textarea name="description" rows={4} defaultValue={defaults?.description ?? ""} />
+      </label>
+      <label>
+        Dimensions
+        <input type="text" name="dimensions" placeholder="ex. 2.40m/170/15mm" defaultValue={defaults?.dimensions ?? ""} />
+      </label>
+      <label>
+        Prix (€)
+        <input type="number" name="price" step="0.01" min="0" defaultValue={defaults?.price ?? ""} />
+      </label>
+      <label>
+        Unité de prix
+        <select name="priceUnit" defaultValue={defaults?.priceUnit ?? ""}>
+          <option value="">— Choisir —</option>
+          {PRICE_UNITS.map((unit) => (
+            <option key={unit} value={unit}>
+              {unit}
+            </option>
+          ))}
+        </select>
       </label>
 
       <fieldset className={s.checkboxList}>

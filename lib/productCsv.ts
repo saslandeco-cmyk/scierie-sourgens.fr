@@ -4,8 +4,18 @@ import { prisma } from "@/lib/prisma";
 import { getFlatCategoryOptions } from "@/lib/catalog";
 import { uniqueSlug } from "@/lib/slug";
 import { deleteImage } from "@/lib/blob";
+import { PRICE_UNITS } from "@/lib/priceUnits";
 
-export const CSV_COLUMNS = ["name", "description", "categories", "images", "position"] as const;
+export const CSV_COLUMNS = [
+  "name",
+  "description",
+  "dimensions",
+  "price",
+  "priceUnit",
+  "categories",
+  "images",
+  "position",
+] as const;
 
 export async function exportProductsCsv(): Promise<string> {
   const products = await prisma.product.findMany({
@@ -19,6 +29,9 @@ export async function exportProductsCsv(): Promise<string> {
   const rows = products.map((product) => ({
     name: product.name,
     description: product.description ?? "",
+    dimensions: product.dimensions ?? "",
+    price: product.price != null ? String(product.price) : "",
+    priceUnit: product.priceUnit ?? "",
     categories: product.categories
       .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
       .join(" | "),
@@ -92,7 +105,24 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
         .filter(Boolean);
 
       const description = (record.description ?? "").trim() || null;
+      const dimensions = (record.dimensions ?? "").trim() || null;
       const position = Number.parseInt(record.position ?? "0", 10) || 0;
+
+      const priceRaw = (record.price ?? "").trim().replace(",", ".");
+      let price: number | null = null;
+      if (priceRaw) {
+        const parsedPrice = Number.parseFloat(priceRaw);
+        if (Number.isNaN(parsedPrice)) {
+          throw new Error(`Prix invalide : "${record.price}"`);
+        }
+        price = parsedPrice;
+      }
+
+      const priceUnitRaw = (record.priceUnit ?? "").trim();
+      if (priceUnitRaw && !PRICE_UNITS.includes(priceUnitRaw as (typeof PRICE_UNITS)[number])) {
+        throw new Error(`Unité de prix invalide : "${priceUnitRaw}" (attendu : ${PRICE_UNITS.join(", ")})`);
+      }
+      const priceUnit = priceUnitRaw || null;
 
       const existing = await prisma.product.findFirst({
         where: { name: { equals: name, mode: "insensitive" } },
@@ -109,6 +139,9 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           data: {
             name,
             description,
+            dimensions,
+            price,
+            priceUnit,
             position,
             categories: { set: categoryIds.map((id) => ({ id })) },
             images: {
@@ -133,6 +166,9 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             name,
             slug,
             description,
+            dimensions,
+            price,
+            priceUnit,
             position,
             categories: { connect: categoryIds.map((id) => ({ id })) },
             images: { create: imageUrls.map((url, idx) => ({ url, position: idx })) },

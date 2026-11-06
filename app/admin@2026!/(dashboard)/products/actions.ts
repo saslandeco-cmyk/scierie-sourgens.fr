@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { uniqueSlug } from "@/lib/slug";
 import { deleteImage, uploadImage } from "@/lib/blob";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
+import { PRICE_UNITS } from "@/lib/priceUnits";
 
 const PRODUCTS_PATH = `${ADMIN_BASE_PATH}/products`;
 
@@ -15,6 +16,9 @@ export type ProductFormState = { error?: string };
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
   description: z.string().optional(),
+  dimensions: z.string().optional(),
+  price: z.coerce.number().nonnegative("Le prix doit être positif.").optional(),
+  priceUnit: z.enum(PRICE_UNITS).optional().or(z.literal("")),
   categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
   position: z.coerce.number().int().default(0),
 });
@@ -23,6 +27,9 @@ function parseProductForm(formData: FormData) {
   return schema.safeParse({
     name: formData.get("name"),
     description: formData.get("description") || undefined,
+    dimensions: formData.get("dimensions") || undefined,
+    price: formData.get("price") || undefined,
+    priceUnit: formData.get("priceUnit") || undefined,
     categoryIds: formData.getAll("categoryIds"),
     position: formData.get("position"),
   });
@@ -61,6 +68,9 @@ export async function createProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
+        dimensions: parsed.data.dimensions ?? null,
+        price: parsed.data.price ?? null,
+        priceUnit: parsed.data.priceUnit || null,
         position: parsed.data.position,
         categories: { connect: parsed.data.categoryIds.map((id) => ({ id })) },
         images: { create: imageUrls.map((url, i) => ({ url, position: i })) },
@@ -117,6 +127,9 @@ export async function updateProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
+        dimensions: parsed.data.dimensions ?? null,
+        price: parsed.data.price ?? null,
+        priceUnit: parsed.data.priceUnit || null,
         position: parsed.data.position,
         categories: { set: parsed.data.categoryIds.map((cid) => ({ id: cid })) },
         images: {

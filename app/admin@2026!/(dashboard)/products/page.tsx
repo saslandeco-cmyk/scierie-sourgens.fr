@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteProduct } from "./actions";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
+import { formatPrice } from "@/lib/priceUnits";
 import ConfirmButton from "../ConfirmButton";
 import s from "../../admin.module.css";
 
@@ -41,6 +42,7 @@ export default async function ProductsPage() {
             <tr>
               <th>Photo</th>
               <th>Nom</th>
+              <th>Prix</th>
               <th>Catégories</th>
               <th></th>
             </tr>
@@ -50,6 +52,7 @@ export default async function ProductsPage() {
               <tr key={product.id}>
                 <td>{product.images[0] && <img src={product.images[0].url} alt={product.name} />}</td>
                 <td>{product.name}</td>
+                <td>{formatPrice(product.price, product.priceUnit) ?? ""}</td>
                 <td>
                   {product.categories
                     .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))

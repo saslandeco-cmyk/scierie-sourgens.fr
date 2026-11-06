@@ -29,6 +29,9 @@ model Product {
   name                  String
   slug                  String         @unique
   description           String?
+  dimensions            String?
+  price                 Float?
+  priceUnit             String?
   position              Int            @default(0)
   categories            Category[]     @relation("CategoryProducts")
   suggestedInCategories Category[]     @relation("CategorySuggestedProducts")

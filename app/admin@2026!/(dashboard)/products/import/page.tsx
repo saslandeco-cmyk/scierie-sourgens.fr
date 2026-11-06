@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
+import { PRICE_UNITS } from "@/lib/priceUnits";
 import ImportForm from "./ImportForm";
 import s from "../../../admin.module.css";
 
@@ -16,10 +17,11 @@ export default function ImportProductsPage() {
       </div>
 
       <p className={s.empty}>
-        Colonnes attendues : <code>name</code>, <code>description</code>, <code>categories</code> (séparées par
-        « | », ex. « Aménagement intérieur » ou « Aménagement intérieur &gt; Parquet »), <code>images</code>{" "}
-        (URLs séparées par « | »), <code>position</code>. Un produit dont le nom correspond exactement à un
-        produit existant sera mis à jour ; sinon il sera créé.
+        Colonnes attendues : <code>name</code>, <code>description</code>, <code>dimensions</code>,{" "}
+        <code>price</code> (nombre), <code>priceUnit</code> (une valeur parmi : {PRICE_UNITS.join(", ")}),{" "}
+        <code>categories</code> (séparées par « | », ex. « Aménagement intérieur » ou « Aménagement intérieur
+        &gt; Parquet »), <code>images</code> (URLs séparées par « | »), <code>position</code>. Un produit dont
+        le nom correspond exactement à un produit existant sera mis à jour ; sinon il sera créé.
       </p>
 
       <ImportForm />
