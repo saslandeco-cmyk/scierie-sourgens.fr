@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
+import ProductGallery from "../../ProductGallery";
 import s from "../../catalogue.module.css";
 
 export const dynamic = "force-dynamic";
@@ -34,11 +34,7 @@ export default async function SubcategoryPage({
         <div className={s.productGrid}>
           {subcategory.products.map((product) => (
             <div key={product.id} className={s.productCard}>
-              {product.images[0] && (
-                <div className={s.productImage}>
-                  <Image src={product.images[0].url} alt={product.name} fill sizes="(max-width: 480px) 100vw, 45vw" />
-                </div>
-              )}
+              <ProductGallery images={product.images} name={product.name} />
               <div className={s.productBody}>
                 <h3>{product.name}</h3>
                 {product.description && <p>{product.description}</p>}
