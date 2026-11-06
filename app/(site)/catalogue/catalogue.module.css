@@ -125,6 +125,7 @@
 
 .productBody {
   width: 40vw;
+  height: 300px;
   flex-shrink: 0;
   padding: 16px 18px;
   display: flex;
