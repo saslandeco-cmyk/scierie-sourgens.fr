@@ -41,6 +41,7 @@ export default async function SubcategoryPage({
               )}
               <div className={s.cardBody}>
                 <h3>{product.name}</h3>
+                {product.price != null && <p className={s.cardPrice}>{product.price.toFixed(2)} €</p>}
                 {product.description && <p>{product.description}</p>}
               </div>
             </div>

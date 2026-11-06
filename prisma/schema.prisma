@@ -28,6 +28,7 @@ model Product {
   name        String
   slug        String         @unique
   description String?
+  price       Float?
   position    Int            @default(0)
   categories  Category[]
   images      ProductImage[]

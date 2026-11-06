@@ -5,7 +5,7 @@ import { getFlatCategoryOptions } from "@/lib/catalog";
 import { uniqueSlug } from "@/lib/slug";
 import { deleteImage } from "@/lib/blob";
 
-export const CSV_COLUMNS = ["name", "description", "categories", "images", "position"] as const;
+export const CSV_COLUMNS = ["name", "description", "price", "categories", "images", "position"] as const;
 
 export async function exportProductsCsv(): Promise<string> {
   const products = await prisma.product.findMany({
@@ -19,6 +19,7 @@ export async function exportProductsCsv(): Promise<string> {
   const rows = products.map((product) => ({
     name: product.name,
     description: product.description ?? "",
+    price: product.price != null ? String(product.price) : "",
     categories: product.categories
       .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
       .join("; "),
@@ -94,6 +95,16 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
       const description = (record.description ?? "").trim() || null;
       const position = Number.parseInt(record.position ?? "0", 10) || 0;
 
+      const priceRaw = (record.price ?? "").trim().replace(",", ".");
+      let price: number | null = null;
+      if (priceRaw) {
+        const parsed = Number.parseFloat(priceRaw);
+        if (Number.isNaN(parsed)) {
+          throw new Error(`Prix invalide : "${record.price}"`);
+        }
+        price = parsed;
+      }
+
       const existing = await prisma.product.findFirst({
         where: { name: { equals: name, mode: "insensitive" } },
         include: { images: true },
@@ -109,6 +120,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           data: {
             name,
             description,
+            price,
             position,
             categories: { set: categoryIds.map((id) => ({ id })) },
             images: {
@@ -133,6 +145,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             name,
             slug,
             description,
+            price,
             position,
             categories: { connect: categoryIds.map((id) => ({ id })) },
             images: { create: imageUrls.map((url, idx) => ({ url, position: idx })) },

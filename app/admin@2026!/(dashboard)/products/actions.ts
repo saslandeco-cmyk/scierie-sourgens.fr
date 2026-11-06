@@ -15,6 +15,7 @@ export type ProductFormState = { error?: string };
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
   description: z.string().optional(),
+  price: z.coerce.number().nonnegative("Le prix doit être positif.").optional(),
   categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
   position: z.coerce.number().int().default(0),
 });
@@ -23,6 +24,7 @@ function parseProductForm(formData: FormData) {
   return schema.safeParse({
     name: formData.get("name"),
     description: formData.get("description") || undefined,
+    price: formData.get("price") || undefined,
     categoryIds: formData.getAll("categoryIds"),
     position: formData.get("position"),
   });
@@ -61,6 +63,7 @@ export async function createProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
+        price: parsed.data.price ?? null,
         position: parsed.data.position,
         categories: { connect: parsed.data.categoryIds.map((id) => ({ id })) },
         images: { create: imageUrls.map((url, i) => ({ url, position: i })) },
@@ -117,6 +120,7 @@ export async function updateProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
+        price: parsed.data.price ?? null,
         position: parsed.data.position,
         categories: { set: parsed.data.categoryIds.map((cid) => ({ id: cid })) },
         images: {

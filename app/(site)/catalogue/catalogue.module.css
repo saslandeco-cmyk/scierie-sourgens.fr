@@ -96,6 +96,11 @@
   color: #666;
 }
 
+.cardBody p.cardPrice {
+  color: #2e3022;
+  font-weight: 700;
+}
+
 .empty {
   color: #666;
 }
