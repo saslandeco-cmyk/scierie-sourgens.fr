@@ -124,7 +124,8 @@
 }
 
 .productBody {
-  flex: 1;
+  width: 40vw;
+  flex-shrink: 0;
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
