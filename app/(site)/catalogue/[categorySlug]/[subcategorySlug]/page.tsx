@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
-import { formatPrice } from "@/lib/priceUnits";
+import { formatPrice, isPriceStatus } from "@/lib/priceUnits";
 import ProductGallery from "../../ProductGallery";
 import s from "../../catalogue.module.css";
 
@@ -44,7 +44,7 @@ export default async function SubcategoryPage({
                     {product.dimensions}
                     {product.dimensions && formatPrice(product.price, product.priceUnit) && " · "}
                     {formatPrice(product.price, product.priceUnit) && (
-                      <span className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
+                      <span className={isPriceStatus(product.priceUnit) ? s.priceStatus : s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
                     )}
                   </p>
                 )}
@@ -73,7 +73,7 @@ export default async function SubcategoryPage({
                       {product.dimensions}
                       {product.dimensions && formatPrice(product.price, product.priceUnit) && " · "}
                       {formatPrice(product.price, product.priceUnit) && (
-                        <span className={s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
+                        <span className={isPriceStatus(product.priceUnit) ? s.priceStatus : s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
                       )}
                     </p>
                   )}

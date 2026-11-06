@@ -188,6 +188,11 @@
   font-weight: 700;
 }
 
+.priceStatus {
+  color: #c0392b;
+  font-weight: 700;
+}
+
 @media (max-width: 480px) {
   .productImage {
     height: 160px;

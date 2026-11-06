@@ -4,6 +4,10 @@ export type PriceUnit = (typeof PRICE_UNITS)[number];
 
 export const PRICE_STATUS_UNITS: PriceUnit[] = ["indisponible", "nous consulter"];
 
+export function isPriceStatus(priceUnit: string | null | undefined): boolean {
+  return Boolean(priceUnit && PRICE_STATUS_UNITS.includes(priceUnit as PriceUnit));
+}
+
 export function formatPrice(price: number | null | undefined, priceUnit: string | null | undefined): string | null {
   if (priceUnit && PRICE_STATUS_UNITS.includes(priceUnit as PriceUnit)) {
     return priceUnit.charAt(0).toUpperCase() + priceUnit.slice(1);
