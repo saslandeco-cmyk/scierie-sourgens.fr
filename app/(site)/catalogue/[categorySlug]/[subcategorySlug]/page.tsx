@@ -31,15 +31,15 @@ export default async function SubcategoryPage({
       {subcategory.products.length === 0 ? (
         <p className={s.empty}>Aucun produit pour le moment.</p>
       ) : (
-        <div className={s.grid}>
+        <div className={s.productGrid}>
           {subcategory.products.map((product) => (
-            <div key={product.id} className={s.card}>
+            <div key={product.id} className={s.productCard}>
               {product.images[0] && (
-                <div className={s.cardImage}>
-                  <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
+                <div className={s.productImage}>
+                  <Image src={product.images[0].url} alt={product.name} fill sizes="(max-width: 480px) 100vw, 45vw" />
                 </div>
               )}
-              <div className={s.cardBody}>
+              <div className={s.productBody}>
                 <h3>{product.name}</h3>
                 {product.description && <p>{product.description}</p>}
               </div>
