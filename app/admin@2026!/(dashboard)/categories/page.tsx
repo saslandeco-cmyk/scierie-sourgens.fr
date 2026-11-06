@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteCategory, moveCategory } from "./actions";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
+import ConfirmButton from "../ConfirmButton";
 import s from "../../admin.module.css";
 
 export const dynamic = "force-dynamic";
@@ -76,9 +77,12 @@ export default async function CategoriesPage() {
                     await deleteCategory(category.id);
                   }}
                 >
-                  <button type="submit" className={`${s.button} ${s.buttonDanger}`}>
+                  <ConfirmButton
+                    className={`${s.button} ${s.buttonDanger}`}
+                    confirmText={`Supprimer définitivement la catégorie « ${category.name} » ? Cette action est irréversible.`}
+                  >
                     Supprimer
-                  </button>
+                  </ConfirmButton>
                 </form>
               </span>
             </div>
@@ -129,9 +133,12 @@ export default async function CategoriesPage() {
                             await deleteCategory(sub.id);
                           }}
                         >
-                          <button type="submit" className={`${s.button} ${s.buttonDanger}`}>
+                          <ConfirmButton
+                            className={`${s.button} ${s.buttonDanger}`}
+                            confirmText={`Supprimer définitivement la sous-catégorie « ${sub.name} » ? Cette action est irréversible.`}
+                          >
                             Supprimer
-                          </button>
+                          </ConfirmButton>
                         </form>
                       </span>
                     </li>

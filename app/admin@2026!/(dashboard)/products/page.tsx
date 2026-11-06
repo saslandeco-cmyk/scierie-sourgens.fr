@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { deleteProduct } from "./actions";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
+import ConfirmButton from "../ConfirmButton";
 import s from "../../admin.module.css";
 
 export const dynamic = "force-dynamic";
@@ -65,9 +66,12 @@ export default async function ProductsPage() {
                         await deleteProduct(product.id);
                       }}
                     >
-                      <button type="submit" className={`${s.button} ${s.buttonDanger}`}>
+                      <ConfirmButton
+                        className={`${s.button} ${s.buttonDanger}`}
+                        confirmText={`Supprimer définitivement le produit « ${product.name} » ? Cette action est irréversible.`}
+                      >
                         Supprimer
-                      </button>
+                      </ConfirmButton>
                     </form>
                   </span>
                 </td>
