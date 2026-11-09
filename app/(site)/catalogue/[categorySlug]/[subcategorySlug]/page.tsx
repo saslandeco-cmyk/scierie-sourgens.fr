@@ -46,6 +46,7 @@ export default async function SubcategoryPage({
                     if (!d.dimension && !priceText && !d.description) return null;
                     return (
                       <div key={d.id}>
+                        {d.description && <p>{d.description}</p>}
                         {(d.dimension || priceText) && (
                           <p>
                             {d.dimension}
@@ -53,7 +54,6 @@ export default async function SubcategoryPage({
                             {priceText && <span className={s.priceTag}>{priceText}</span>}
                           </p>
                         )}
-                        {d.description && <p>{d.description}</p>}
                       </div>
                     );
                   })}
@@ -89,6 +89,7 @@ export default async function SubcategoryPage({
                       if (!d.dimension && !priceText && !d.description) return null;
                       return (
                         <div key={d.id}>
+                          {d.description && <p>{d.description}</p>}
                           {(d.dimension || priceText) && (
                             <p>
                               {d.dimension}
@@ -96,7 +97,6 @@ export default async function SubcategoryPage({
                               {priceText && <span className={s.priceTag}>{priceText}</span>}
                             </p>
                           )}
-                          {d.description && <p>{d.description}</p>}
                         </div>
                       );
                     })}
