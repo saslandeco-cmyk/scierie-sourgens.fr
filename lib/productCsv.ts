@@ -8,6 +8,7 @@ import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
 
 export const CSV_COLUMNS = [
   "name",
+  "longDescription",
   "dimensions",
   "priceUnit",
   "priceStatus",
@@ -28,6 +29,7 @@ export async function exportProductsCsv(): Promise<string> {
 
   const rows = products.map((product) => ({
     name: product.name,
+    longDescription: product.longDescription ?? "",
     dimensions: product.dimensions.map((d) => `${d.dimension}:${d.price ?? ""}:${d.description ?? ""}`).join(" | "),
     priceUnit: product.priceUnit ?? "",
     priceStatus: product.priceStatus ?? "",
@@ -103,6 +105,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
         .map((u) => u.trim())
         .filter(Boolean);
 
+      const longDescription = (record.longDescription ?? "").trim() || null;
       const position = Number.parseInt(record.position ?? "0", 10) || 0;
 
       const dimensionEntries = (record.dimensions ?? "")
@@ -155,6 +158,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           where: { id: existing.id },
           data: {
             name,
+            longDescription,
             priceUnit,
             priceStatus,
             position,
@@ -184,6 +188,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           data: {
             name,
             slug,
+            longDescription,
             priceUnit,
             priceStatus,
             position,

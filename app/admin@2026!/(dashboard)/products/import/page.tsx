@@ -17,7 +17,7 @@ export default function ImportProductsPage() {
       </div>
 
       <p className={s.empty}>
-        Colonnes attendues : <code>name</code>,{" "}
+        Colonnes attendues : <code>name</code>, <code>longDescription</code> (facultatif),{" "}
         <code>dimensions</code> (triplets « dimension:prix:description » séparés par « | », ex.
         « 2.40m/170/15mm:19.20:Type mezzanine | 3.00m/170/15mm:22.00: » — le prix et la description peuvent
         être omis, ex. « 2.40m/170/15mm:: »),{" "}

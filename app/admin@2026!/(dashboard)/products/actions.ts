@@ -15,6 +15,7 @@ export type ProductFormState = { error?: string };
 
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
+  longDescription: z.string().optional(),
   priceUnit: z.enum(UNIT_OPTIONS).optional().or(z.literal("")),
   priceStatus: z.enum(STATUS_OPTIONS).optional().or(z.literal("")),
   categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
@@ -24,6 +25,7 @@ const schema = z.object({
 function parseProductForm(formData: FormData) {
   return schema.safeParse({
     name: formData.get("name"),
+    longDescription: formData.get("longDescription") || undefined,
     priceUnit: formData.get("priceUnit") || undefined,
     priceStatus: formData.get("priceStatus") || undefined,
     categoryIds: formData.getAll("categoryIds"),
@@ -95,6 +97,7 @@ export async function createProduct(
       data: {
         name: parsed.data.name,
         slug,
+        longDescription: parsed.data.longDescription ?? null,
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
@@ -158,6 +161,7 @@ export async function updateProduct(
       data: {
         name: parsed.data.name,
         slug,
+        longDescription: parsed.data.longDescription ?? null,
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
