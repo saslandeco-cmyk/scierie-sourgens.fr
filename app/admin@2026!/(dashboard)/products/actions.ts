@@ -29,7 +29,7 @@ function parseProductForm(formData: FormData) {
     description: formData.get("description") || undefined,
     dimensions: formData.get("dimensions") || undefined,
     price: formData.get("price") || undefined,
-    priceUnit: formData.get("priceUnit") || undefined,
+    priceUnit: formData.get("priceStatus") || formData.get("priceUnit") || undefined,
     categoryIds: formData.getAll("categoryIds"),
     position: formData.get("position"),
   });

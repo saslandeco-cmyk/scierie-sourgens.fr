@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import type { ProductFormState } from "./actions";
 import ImagePicker from "./ImagePicker";
-import { PRICE_UNITS } from "@/lib/priceUnits";
+import { UNIT_OPTIONS, STATUS_OPTIONS, isPriceStatus } from "@/lib/priceUnits";
 import s from "../../admin.module.css";
 
 export type FlatCategory = { id: string; label: string };
@@ -31,6 +31,9 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
   const [state, formAction, pending] = useActionState(action, initialState);
   const selectedCategoryIds = defaults?.categoryIds ?? [];
   const existingImages = defaults?.images ?? [];
+  const defaultIsStatus = isPriceStatus(defaults?.priceUnit);
+  const defaultUnit = defaultIsStatus ? "" : defaults?.priceUnit ?? "";
+  const defaultStatus = defaultIsStatus ? defaults?.priceUnit ?? "" : "";
 
   return (
     <form className={s.form} action={formAction}>
@@ -52,11 +55,22 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       </label>
       <label>
         Unité de prix
-        <select name="priceUnit" defaultValue={defaults?.priceUnit ?? ""}>
+        <select name="priceUnit" defaultValue={defaultUnit}>
           <option value="">— Choisir —</option>
-          {PRICE_UNITS.map((unit) => (
+          {UNIT_OPTIONS.map((unit) => (
             <option key={unit} value={unit}>
               {unit}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Statut (optionnel)
+        <select name="priceStatus" defaultValue={defaultStatus}>
+          <option value="">— Aucun —</option>
+          {STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {status}
             </option>
           ))}
         </select>
