@@ -36,7 +36,7 @@ export default async function SubcategoryPage({
         <div className={s.productGrid}>
           {subcategory.products.map((product) => {
             const priceText = formatPrice(product.price, product.priceUnit);
-            const statusText = formatStatus(product.priceUnit);
+            const statusText = formatStatus(product.priceStatus);
             return (
               <div key={product.id} className={s.productCard}>
                 <ProductGallery images={product.images} name={product.name} />
@@ -65,7 +65,7 @@ export default async function SubcategoryPage({
           <div className={s.grid}>
             {subcategory.suggestedProducts.map((product) => {
               const priceText = formatPrice(product.price, product.priceUnit);
-              const statusText = formatStatus(product.priceUnit);
+              const statusText = formatStatus(product.priceStatus);
               return (
                 <div key={product.id} className={s.card}>
                   {product.images[0] && (

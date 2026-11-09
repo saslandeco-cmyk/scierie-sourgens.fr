@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import type { ProductFormState } from "./actions";
 import ImagePicker from "./ImagePicker";
-import { UNIT_OPTIONS, STATUS_OPTIONS, isPriceStatus } from "@/lib/priceUnits";
+import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
 import s from "../../admin.module.css";
 
 export type FlatCategory = { id: string; label: string };
@@ -18,6 +18,7 @@ type Props = {
     dimensions?: string;
     price?: number | null;
     priceUnit?: string | null;
+    priceStatus?: string | null;
     categoryIds?: string[];
     position?: number;
     images?: ExistingImage[];
@@ -31,9 +32,6 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
   const [state, formAction, pending] = useActionState(action, initialState);
   const selectedCategoryIds = defaults?.categoryIds ?? [];
   const existingImages = defaults?.images ?? [];
-  const defaultIsStatus = isPriceStatus(defaults?.priceUnit);
-  const defaultUnit = defaultIsStatus ? "" : defaults?.priceUnit ?? "";
-  const defaultStatus = defaultIsStatus ? defaults?.priceUnit ?? "" : "";
 
   return (
     <form className={s.form} action={formAction}>
@@ -55,7 +53,7 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       </label>
       <label>
         Unité de prix
-        <select name="priceUnit" defaultValue={defaultUnit}>
+        <select name="priceUnit" defaultValue={defaults?.priceUnit ?? ""}>
           <option value="">— Choisir —</option>
           {UNIT_OPTIONS.map((unit) => (
             <option key={unit} value={unit}>
@@ -66,7 +64,7 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       </label>
       <label>
         Statut (optionnel)
-        <select name="priceStatus" defaultValue={defaultStatus}>
+        <select name="priceStatus" defaultValue={defaults?.priceStatus ?? ""}>
           <option value="">— Aucun —</option>
           {STATUS_OPTIONS.map((status) => (
             <option key={status} value={status}>

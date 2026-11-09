@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getFlatCategoryOptions } from "@/lib/catalog";
 import { uniqueSlug } from "@/lib/slug";
 import { deleteImage } from "@/lib/blob";
-import { UNIT_OPTIONS, STATUS_OPTIONS, isPriceStatus } from "@/lib/priceUnits";
+import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
 
 export const CSV_COLUMNS = [
   "name",
@@ -32,8 +32,8 @@ export async function exportProductsCsv(): Promise<string> {
     description: product.description ?? "",
     dimensions: product.dimensions ?? "",
     price: product.price != null ? String(product.price) : "",
-    priceUnit: product.priceUnit && !isPriceStatus(product.priceUnit) ? product.priceUnit : "",
-    priceStatus: product.priceUnit && isPriceStatus(product.priceUnit) ? product.priceUnit : "",
+    priceUnit: product.priceUnit ?? "",
+    priceStatus: product.priceStatus ?? "",
     categories: product.categories
       .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
       .join(" | "),
@@ -130,7 +130,8 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
         throw new Error(`Statut invalide : "${priceStatusRaw}" (attendu : ${STATUS_OPTIONS.join(", ")})`);
       }
 
-      const priceUnit = priceStatusRaw || priceUnitRaw || null;
+      const priceUnit = priceUnitRaw || null;
+      const priceStatus = priceStatusRaw || null;
 
       const existing = await prisma.product.findFirst({
         where: { name: { equals: name, mode: "insensitive" } },
@@ -150,6 +151,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             dimensions,
             price,
             priceUnit,
+            priceStatus,
             position,
             categories: { set: categoryIds.map((id) => ({ id })) },
             images: {
@@ -177,6 +179,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             dimensions,
             price,
             priceUnit,
+            priceStatus,
             position,
             categories: { connect: categoryIds.map((id) => ({ id })) },
             images: { create: imageUrls.map((url, idx) => ({ url, position: idx })) },

@@ -32,6 +32,7 @@ model Product {
   dimensions            String?
   price                 Float?
   priceUnit             String?
+  priceStatus           String?
   position              Int            @default(0)
   categories            Category[]     @relation("CategoryProducts")
   suggestedInCategories Category[]     @relation("CategorySuggestedProducts")
