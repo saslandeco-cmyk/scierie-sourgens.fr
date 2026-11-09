@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
-import { formatPrice, isPriceStatus } from "@/lib/priceUnits";
+import { formatPrice, formatStatus } from "@/lib/priceUnits";
 import ProductGallery from "../../ProductGallery";
 import s from "../../catalogue.module.css";
 
@@ -34,24 +34,28 @@ export default async function SubcategoryPage({
         <p className={s.empty}>Aucun produit pour le moment.</p>
       ) : (
         <div className={s.productGrid}>
-          {subcategory.products.map((product) => (
-            <div key={product.id} className={s.productCard}>
-              <ProductGallery images={product.images} name={product.name} />
-              <div className={s.productBody}>
-                <h3>{product.name}</h3>
-                {(product.dimensions || formatPrice(product.price, product.priceUnit)) && (
-                  <p>
-                    {product.dimensions}
-                    {product.dimensions && formatPrice(product.price, product.priceUnit) && " · "}
-                    {formatPrice(product.price, product.priceUnit) && (
-                      <span className={isPriceStatus(product.priceUnit) ? s.priceStatus : s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
-                    )}
-                  </p>
-                )}
-                {product.description && <p>{product.description}</p>}
+          {subcategory.products.map((product) => {
+            const priceText = formatPrice(product.price, product.priceUnit);
+            const statusText = formatStatus(product.priceUnit);
+            return (
+              <div key={product.id} className={s.productCard}>
+                <ProductGallery images={product.images} name={product.name} />
+                <div className={s.productBody}>
+                  <h3>{product.name}</h3>
+                  {(product.dimensions || priceText || statusText) && (
+                    <p>
+                      {product.dimensions}
+                      {product.dimensions && (priceText || statusText) && " · "}
+                      {priceText && <span className={s.priceTag}>{priceText}</span>}
+                      {priceText && statusText && " · "}
+                      {statusText && <span className={s.priceStatus}>{statusText}</span>}
+                    </p>
+                  )}
+                  {product.description && <p>{product.description}</p>}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -59,28 +63,32 @@ export default async function SubcategoryPage({
         <>
           <h2 className={`${s.title} ${s.suggestedTitle}`}>Vous pourriez avoir besoin de :</h2>
           <div className={s.grid}>
-            {subcategory.suggestedProducts.map((product) => (
-              <div key={product.id} className={s.card}>
-                {product.images[0] && (
-                  <div className={s.cardImage}>
-                    <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
-                  </div>
-                )}
-                <div className={s.cardBody}>
-                  <h3>{product.name}</h3>
-                  {(product.dimensions || formatPrice(product.price, product.priceUnit)) && (
-                    <p>
-                      {product.dimensions}
-                      {product.dimensions && formatPrice(product.price, product.priceUnit) && " · "}
-                      {formatPrice(product.price, product.priceUnit) && (
-                        <span className={isPriceStatus(product.priceUnit) ? s.priceStatus : s.priceTag}>{formatPrice(product.price, product.priceUnit)}</span>
-                      )}
-                    </p>
+            {subcategory.suggestedProducts.map((product) => {
+              const priceText = formatPrice(product.price, product.priceUnit);
+              const statusText = formatStatus(product.priceUnit);
+              return (
+                <div key={product.id} className={s.card}>
+                  {product.images[0] && (
+                    <div className={s.cardImage}>
+                      <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
+                    </div>
                   )}
-                  {product.description && <p>{product.description}</p>}
+                  <div className={s.cardBody}>
+                    <h3>{product.name}</h3>
+                    {(product.dimensions || priceText || statusText) && (
+                      <p>
+                        {product.dimensions}
+                        {product.dimensions && (priceText || statusText) && " · "}
+                        {priceText && <span className={s.priceTag}>{priceText}</span>}
+                        {priceText && statusText && " · "}
+                        {statusText && <span className={s.priceStatus}>{statusText}</span>}
+                      </p>
+                    )}
+                    {product.description && <p>{product.description}</p>}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}

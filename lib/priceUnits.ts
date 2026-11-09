@@ -12,10 +12,13 @@ export function isPriceStatus(priceUnit: string | null | undefined): boolean {
   return Boolean(priceUnit && PRICE_STATUS_UNITS.includes(priceUnit as PriceUnit));
 }
 
+export function formatStatus(priceUnit: string | null | undefined): string | null {
+  if (!priceUnit || !PRICE_STATUS_UNITS.includes(priceUnit as PriceUnit)) return null;
+  return priceUnit.charAt(0).toUpperCase() + priceUnit.slice(1);
+}
+
 export function formatPrice(price: number | null | undefined, priceUnit: string | null | undefined): string | null {
-  if (priceUnit && PRICE_STATUS_UNITS.includes(priceUnit as PriceUnit)) {
-    return priceUnit.charAt(0).toUpperCase() + priceUnit.slice(1);
-  }
   if (price == null) return null;
-  return priceUnit ? `${price.toFixed(2)} € TTC / ${priceUnit}` : `${price.toFixed(2)} € TTC`;
+  const unit = priceUnit && !isPriceStatus(priceUnit) ? priceUnit : null;
+  return unit ? `${price.toFixed(2)} € TTC / ${unit}` : `${price.toFixed(2)} € TTC`;
 }
