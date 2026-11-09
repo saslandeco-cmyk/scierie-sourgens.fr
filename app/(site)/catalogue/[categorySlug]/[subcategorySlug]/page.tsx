@@ -45,16 +45,13 @@ export default async function SubcategoryPage({
                     const priceText = formatPrice(d.price, product.priceUnit);
                     if (!d.dimension && !priceText && !d.description) return null;
                     return (
-                      <div key={d.id}>
-                        {d.description && <p>{d.description}</p>}
-                        {(d.dimension || priceText) && (
-                          <p>
-                            {d.dimension}
-                            {d.dimension && priceText && " · "}
-                            {priceText && <span className={s.priceTag}>{priceText}</span>}
-                          </p>
-                        )}
-                      </div>
+                      <p key={d.id}>
+                        {d.description}
+                        {d.description && (d.dimension || priceText) && " "}
+                        {d.dimension}
+                        {d.dimension && priceText && " · "}
+                        {priceText && <span className={s.priceTag}>{priceText}</span>}
+                      </p>
                     );
                   })}
                   {statusText && (
@@ -88,16 +85,13 @@ export default async function SubcategoryPage({
                       const priceText = formatPrice(d.price, product.priceUnit);
                       if (!d.dimension && !priceText && !d.description) return null;
                       return (
-                        <div key={d.id}>
-                          {d.description && <p>{d.description}</p>}
-                          {(d.dimension || priceText) && (
-                            <p>
-                              {d.dimension}
-                              {d.dimension && priceText && " · "}
-                              {priceText && <span className={s.priceTag}>{priceText}</span>}
-                            </p>
-                          )}
-                        </div>
+                        <p key={d.id}>
+                          {d.description}
+                          {d.description && (d.dimension || priceText) && " "}
+                          {d.dimension}
+                          {d.dimension && priceText && " · "}
+                          {priceText && <span className={s.priceTag}>{priceText}</span>}
+                        </p>
                       );
                     })}
                     {statusText && (
