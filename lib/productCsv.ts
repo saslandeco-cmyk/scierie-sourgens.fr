@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getFlatCategoryOptions } from "@/lib/catalog";
 import { uniqueSlug } from "@/lib/slug";
 import { deleteImage } from "@/lib/blob";
-import { PRICE_UNITS } from "@/lib/priceUnits";
+import { UNIT_OPTIONS, STATUS_OPTIONS, isPriceStatus } from "@/lib/priceUnits";
 
 export const CSV_COLUMNS = [
   "name",
@@ -12,6 +12,7 @@ export const CSV_COLUMNS = [
   "dimensions",
   "price",
   "priceUnit",
+  "priceStatus",
   "categories",
   "images",
   "position",
@@ -31,7 +32,8 @@ export async function exportProductsCsv(): Promise<string> {
     description: product.description ?? "",
     dimensions: product.dimensions ?? "",
     price: product.price != null ? String(product.price) : "",
-    priceUnit: product.priceUnit ?? "",
+    priceUnit: product.priceUnit && !isPriceStatus(product.priceUnit) ? product.priceUnit : "",
+    priceStatus: product.priceUnit && isPriceStatus(product.priceUnit) ? product.priceUnit : "",
     categories: product.categories
       .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
       .join(" | "),
@@ -119,10 +121,16 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
       }
 
       const priceUnitRaw = (record.priceUnit ?? "").trim();
-      if (priceUnitRaw && !PRICE_UNITS.includes(priceUnitRaw as (typeof PRICE_UNITS)[number])) {
-        throw new Error(`Unité de prix invalide : "${priceUnitRaw}" (attendu : ${PRICE_UNITS.join(", ")})`);
+      if (priceUnitRaw && !UNIT_OPTIONS.includes(priceUnitRaw as (typeof UNIT_OPTIONS)[number])) {
+        throw new Error(`Unité de prix invalide : "${priceUnitRaw}" (attendu : ${UNIT_OPTIONS.join(", ")})`);
       }
-      const priceUnit = priceUnitRaw || null;
+
+      const priceStatusRaw = (record.priceStatus ?? "").trim();
+      if (priceStatusRaw && !STATUS_OPTIONS.includes(priceStatusRaw as (typeof STATUS_OPTIONS)[number])) {
+        throw new Error(`Statut invalide : "${priceStatusRaw}" (attendu : ${STATUS_OPTIONS.join(", ")})`);
+      }
+
+      const priceUnit = priceStatusRaw || priceUnitRaw || null;
 
       const existing = await prisma.product.findFirst({
         where: { name: { equals: name, mode: "insensitive" } },
