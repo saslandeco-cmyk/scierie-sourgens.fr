@@ -308,15 +308,24 @@
 
 .dimensionRow {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.dimensionRowTop {
+  display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.dimensionRow input {
+.dimensionRowTop input {
   flex: 1;
 }
 
-.dimensionRow button {
+.dimensionRowTop button {
   flex-shrink: 0;
   width: 28px;
   height: 28px;
@@ -326,6 +335,11 @@
   font-size: 15px;
   line-height: 1;
   cursor: pointer;
+}
+
+.dimensionRow textarea {
+  width: 100%;
+  resize: vertical;
 }
 
 .imageGrid {

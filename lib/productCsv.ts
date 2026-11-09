@@ -8,7 +8,6 @@ import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
 
 export const CSV_COLUMNS = [
   "name",
-  "description",
   "dimensions",
   "priceUnit",
   "priceStatus",
@@ -29,8 +28,7 @@ export async function exportProductsCsv(): Promise<string> {
 
   const rows = products.map((product) => ({
     name: product.name,
-    description: product.description ?? "",
-    dimensions: product.dimensions.map((d) => `${d.dimension}:${d.price ?? ""}`).join(" | "),
+    dimensions: product.dimensions.map((d) => `${d.dimension}:${d.price ?? ""}:${d.description ?? ""}`).join(" | "),
     priceUnit: product.priceUnit ?? "",
     priceStatus: product.priceStatus ?? "",
     categories: product.categories
@@ -105,7 +103,6 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
         .map((u) => u.trim())
         .filter(Boolean);
 
-      const description = (record.description ?? "").trim() || null;
       const position = Number.parseInt(record.position ?? "0", 10) || 0;
 
       const dimensionEntries = (record.dimensions ?? "")
@@ -113,11 +110,14 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
         .map((entry) => entry.trim())
         .filter(Boolean);
 
-      const dimensions: { dimension: string; price: number | null }[] = [];
+      const dimensions: { dimension: string; price: number | null; description: string | null }[] = [];
       for (const entry of dimensionEntries) {
-        const sep = entry.indexOf(":");
-        const dimension = (sep >= 0 ? entry.slice(0, sep) : entry).trim();
-        const priceRaw = (sep >= 0 ? entry.slice(sep + 1) : "").trim().replace(",", ".");
+        const firstSep = entry.indexOf(":");
+        const dimension = (firstSep >= 0 ? entry.slice(0, firstSep) : entry).trim();
+        const rest = firstSep >= 0 ? entry.slice(firstSep + 1) : "";
+        const secondSep = rest.indexOf(":");
+        const priceRaw = (secondSep >= 0 ? rest.slice(0, secondSep) : rest).trim().replace(",", ".");
+        const description = (secondSep >= 0 ? rest.slice(secondSep + 1) : "").trim() || null;
         let price: number | null = null;
         if (priceRaw) {
           price = Number.parseFloat(priceRaw);
@@ -125,7 +125,7 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             throw new Error(`Prix invalide pour la dimension "${dimension}" : "${priceRaw}"`);
           }
         }
-        dimensions.push({ dimension, price });
+        dimensions.push({ dimension, price, description });
       }
 
       const priceUnitRaw = (record.priceUnit ?? "").trim();
@@ -155,7 +155,6 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           where: { id: existing.id },
           data: {
             name,
-            description,
             priceUnit,
             priceStatus,
             position,
@@ -185,7 +184,6 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           data: {
             name,
             slug,
-            description,
             priceUnit,
             priceStatus,
             position,

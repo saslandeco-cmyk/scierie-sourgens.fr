@@ -43,13 +43,18 @@ export default async function SubcategoryPage({
                   <h3>{product.name}</h3>
                   {product.dimensions.map((d) => {
                     const priceText = formatPrice(d.price, product.priceUnit);
-                    if (!d.dimension && !priceText) return null;
+                    if (!d.dimension && !priceText && !d.description) return null;
                     return (
-                      <p key={d.id}>
-                        {d.dimension}
-                        {d.dimension && priceText && " · "}
-                        {priceText && <span className={s.priceTag}>{priceText}</span>}
-                      </p>
+                      <div key={d.id}>
+                        {(d.dimension || priceText) && (
+                          <p>
+                            {d.dimension}
+                            {d.dimension && priceText && " · "}
+                            {priceText && <span className={s.priceTag}>{priceText}</span>}
+                          </p>
+                        )}
+                        {d.description && <p>{d.description}</p>}
+                      </div>
                     );
                   })}
                   {statusText && (
@@ -57,7 +62,6 @@ export default async function SubcategoryPage({
                       <span className={s.priceStatus}>{statusText}</span>
                     </p>
                   )}
-                  {product.description && <p>{product.description}</p>}
                 </div>
               </div>
             );
@@ -82,13 +86,18 @@ export default async function SubcategoryPage({
                     <h3>{product.name}</h3>
                     {product.dimensions.map((d) => {
                       const priceText = formatPrice(d.price, product.priceUnit);
-                      if (!d.dimension && !priceText) return null;
+                      if (!d.dimension && !priceText && !d.description) return null;
                       return (
-                        <p key={d.id}>
-                          {d.dimension}
-                          {d.dimension && priceText && " · "}
-                          {priceText && <span className={s.priceTag}>{priceText}</span>}
-                        </p>
+                        <div key={d.id}>
+                          {(d.dimension || priceText) && (
+                            <p>
+                              {d.dimension}
+                              {d.dimension && priceText && " · "}
+                              {priceText && <span className={s.priceTag}>{priceText}</span>}
+                            </p>
+                          )}
+                          {d.description && <p>{d.description}</p>}
+                        </div>
                       );
                     })}
                     {statusText && (
@@ -96,7 +105,6 @@ export default async function SubcategoryPage({
                         <span className={s.priceStatus}>{statusText}</span>
                       </p>
                     )}
-                    {product.description && <p>{product.description}</p>}
                   </div>
                 </div>
               );

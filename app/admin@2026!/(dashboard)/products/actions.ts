@@ -15,7 +15,6 @@ export type ProductFormState = { error?: string };
 
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
-  description: z.string().optional(),
   priceUnit: z.enum(UNIT_OPTIONS).optional().or(z.literal("")),
   priceStatus: z.enum(STATUS_OPTIONS).optional().or(z.literal("")),
   categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
@@ -25,7 +24,6 @@ const schema = z.object({
 function parseProductForm(formData: FormData) {
   return schema.safeParse({
     name: formData.get("name"),
-    description: formData.get("description") || undefined,
     priceUnit: formData.get("priceUnit") || undefined,
     priceStatus: formData.get("priceStatus") || undefined,
     categoryIds: formData.getAll("categoryIds"),
@@ -33,17 +31,19 @@ function parseProductForm(formData: FormData) {
   });
 }
 
-type DimensionInput = { dimension: string; price: number | null };
+type DimensionInput = { dimension: string; price: number | null; description: string | null };
 
 function parseDimensions(formData: FormData): { data: DimensionInput[] } | { error: string } {
   const dimensionValues = formData.getAll("dimension").map((v) => String(v).trim());
   const priceValues = formData.getAll("dimensionPrice").map((v) => String(v).trim());
+  const descriptionValues = formData.getAll("dimensionDescription").map((v) => String(v).trim());
   const data: DimensionInput[] = [];
 
   for (let i = 0; i < dimensionValues.length; i++) {
     const dimension = dimensionValues[i];
     const priceRaw = priceValues[i] ?? "";
-    if (!dimension && !priceRaw) continue;
+    const description = descriptionValues[i] || "";
+    if (!dimension && !priceRaw && !description) continue;
 
     let price: number | null = null;
     if (priceRaw) {
@@ -52,7 +52,7 @@ function parseDimensions(formData: FormData): { data: DimensionInput[] } | { err
         return { error: `Prix invalide pour la dimension "${dimension || "(sans nom)"}".` };
       }
     }
-    data.push({ dimension, price });
+    data.push({ dimension, price, description: description || null });
   }
 
   return { data };
@@ -95,7 +95,6 @@ export async function createProduct(
       data: {
         name: parsed.data.name,
         slug,
-        description: parsed.data.description ?? null,
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
@@ -159,7 +158,6 @@ export async function updateProduct(
       data: {
         name: parsed.data.name,
         slug,
-        description: parsed.data.description ?? null,
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,

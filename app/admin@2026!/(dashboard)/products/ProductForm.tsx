@@ -15,7 +15,6 @@ type Props = {
   categories: FlatCategory[];
   defaults?: {
     name?: string;
-    description?: string;
     dimensions?: DimensionDefault[];
     priceUnit?: string | null;
     priceStatus?: string | null;
@@ -38,10 +37,6 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       <label>
         Nom
         <input type="text" name="name" defaultValue={defaults?.name ?? ""} required />
-      </label>
-      <label>
-        Description
-        <textarea name="description" rows={4} defaultValue={defaults?.description ?? ""} />
       </label>
       <DimensionsField defaults={defaults?.dimensions} />
       <label>
