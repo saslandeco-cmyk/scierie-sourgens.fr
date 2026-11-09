@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { ProductFormState } from "./actions";
 import ImagePicker from "./ImagePicker";
+import DimensionsField, { type DimensionDefault } from "./DimensionsField";
 import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
 import s from "../../admin.module.css";
 
@@ -15,8 +16,7 @@ type Props = {
   defaults?: {
     name?: string;
     description?: string;
-    dimensions?: string;
-    price?: number | null;
+    dimensions?: DimensionDefault[];
     priceUnit?: string | null;
     priceStatus?: string | null;
     categoryIds?: string[];
@@ -43,14 +43,7 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
         Description
         <textarea name="description" rows={4} defaultValue={defaults?.description ?? ""} />
       </label>
-      <label>
-        Dimensions
-        <input type="text" name="dimensions" placeholder="ex. 2.40m/170/15mm" defaultValue={defaults?.dimensions ?? ""} />
-      </label>
-      <label>
-        Prix (€)
-        <input type="number" name="price" step="0.01" min="0" defaultValue={defaults?.price ?? ""} />
-      </label>
+      <DimensionsField defaults={defaults?.dimensions} />
       <label>
         Unité de prix
         <select name="priceUnit" defaultValue={defaults?.priceUnit ?? ""}>

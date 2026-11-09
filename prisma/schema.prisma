@@ -25,25 +25,34 @@ model Category {
 }
 
 model Product {
-  id                    String         @id @default(cuid())
+  id                    String             @id @default(cuid())
   name                  String
-  slug                  String         @unique
+  slug                  String             @unique
   description           String?
-  dimensions            String?
-  price                 Float?
   priceUnit             String?
   priceStatus           String?
-  position              Int            @default(0)
-  categories            Category[]     @relation("CategoryProducts")
-  suggestedInCategories Category[]     @relation("CategorySuggestedProducts")
+  position              Int                @default(0)
+  categories            Category[]         @relation("CategoryProducts")
+  suggestedInCategories Category[]         @relation("CategorySuggestedProducts")
   images                ProductImage[]
-  createdAt             DateTime       @default(now())
-  updatedAt             DateTime       @updatedAt
+  dimensions            ProductDimension[]
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
 }
 
 model ProductImage {
   id        String   @id @default(cuid())
   url       String
+  position  Int      @default(0)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model ProductDimension {
+  id        String   @id @default(cuid())
+  dimension String
+  price     Float?
   position  Int      @default(0)
   productId String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)

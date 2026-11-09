@@ -35,20 +35,26 @@ export default async function SubcategoryPage({
       ) : (
         <div className={s.productGrid}>
           {subcategory.products.map((product) => {
-            const priceText = formatPrice(product.price, product.priceUnit);
             const statusText = formatStatus(product.priceStatus);
             return (
               <div key={product.id} className={s.productCard}>
                 <ProductGallery images={product.images} name={product.name} />
                 <div className={s.productBody}>
                   <h3>{product.name}</h3>
-                  {(product.dimensions || priceText || statusText) && (
+                  {product.dimensions.map((d) => {
+                    const priceText = formatPrice(d.price, product.priceUnit);
+                    if (!d.dimension && !priceText) return null;
+                    return (
+                      <p key={d.id}>
+                        {d.dimension}
+                        {d.dimension && priceText && " · "}
+                        {priceText && <span className={s.priceTag}>{priceText}</span>}
+                      </p>
+                    );
+                  })}
+                  {statusText && (
                     <p>
-                      {product.dimensions}
-                      {product.dimensions && (priceText || statusText) && " · "}
-                      {priceText && <span className={s.priceTag}>{priceText}</span>}
-                      {priceText && statusText && " · "}
-                      {statusText && <span className={s.priceStatus}>{statusText}</span>}
+                      <span className={s.priceStatus}>{statusText}</span>
                     </p>
                   )}
                   {product.description && <p>{product.description}</p>}
@@ -64,7 +70,6 @@ export default async function SubcategoryPage({
           <h2 className={`${s.title} ${s.suggestedTitle}`}>Vous pourriez avoir besoin de :</h2>
           <div className={s.grid}>
             {subcategory.suggestedProducts.map((product) => {
-              const priceText = formatPrice(product.price, product.priceUnit);
               const statusText = formatStatus(product.priceStatus);
               return (
                 <div key={product.id} className={s.card}>
@@ -75,13 +80,20 @@ export default async function SubcategoryPage({
                   )}
                   <div className={s.cardBody}>
                     <h3>{product.name}</h3>
-                    {(product.dimensions || priceText || statusText) && (
+                    {product.dimensions.map((d) => {
+                      const priceText = formatPrice(d.price, product.priceUnit);
+                      if (!d.dimension && !priceText) return null;
+                      return (
+                        <p key={d.id}>
+                          {d.dimension}
+                          {d.dimension && priceText && " · "}
+                          {priceText && <span className={s.priceTag}>{priceText}</span>}
+                        </p>
+                      );
+                    })}
+                    {statusText && (
                       <p>
-                        {product.dimensions}
-                        {product.dimensions && (priceText || statusText) && " · "}
-                        {priceText && <span className={s.priceTag}>{priceText}</span>}
-                        {priceText && statusText && " · "}
-                        {statusText && <span className={s.priceStatus}>{statusText}</span>}
+                        <span className={s.priceStatus}>{statusText}</span>
                       </p>
                     )}
                     {product.description && <p>{product.description}</p>}

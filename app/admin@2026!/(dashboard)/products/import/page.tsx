@@ -17,8 +17,10 @@ export default function ImportProductsPage() {
       </div>
 
       <p className={s.empty}>
-        Colonnes attendues : <code>name</code>, <code>description</code>, <code>dimensions</code>,{" "}
-        <code>price</code> (nombre), <code>priceUnit</code> (une valeur parmi : {UNIT_OPTIONS.join(", ")}),{" "}
+        Colonnes attendues : <code>name</code>, <code>description</code>,{" "}
+        <code>dimensions</code> (paires « dimension:prix » séparées par « | », ex. « 2.40m/170/15mm:19.20 |
+        3.00m/170/15mm:22.00 » — le prix peut être omis, ex. « 2.40m/170/15mm: »),{" "}
+        <code>priceUnit</code> (une valeur parmi : {UNIT_OPTIONS.join(", ")}),{" "}
         <code>priceStatus</code> (optionnel, une valeur parmi : {STATUS_OPTIONS.join(", ")}),{" "}
         <code>categories</code> (séparées par « | », ex. « Aménagement intérieur » ou « Aménagement intérieur
         &gt; Parquet »), <code>images</code> (URLs séparées par « | »), <code>position</code>. Un produit dont

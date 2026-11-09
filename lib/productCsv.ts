@@ -10,7 +10,6 @@ export const CSV_COLUMNS = [
   "name",
   "description",
   "dimensions",
-  "price",
   "priceUnit",
   "priceStatus",
   "categories",
@@ -24,14 +23,14 @@ export async function exportProductsCsv(): Promise<string> {
     include: {
       categories: { include: { parent: true } },
       images: { orderBy: { position: "asc" } },
+      dimensions: { orderBy: { position: "asc" } },
     },
   });
 
   const rows = products.map((product) => ({
     name: product.name,
     description: product.description ?? "",
-    dimensions: product.dimensions ?? "",
-    price: product.price != null ? String(product.price) : "",
+    dimensions: product.dimensions.map((d) => `${d.dimension}:${d.price ?? ""}`).join(" | "),
     priceUnit: product.priceUnit ?? "",
     priceStatus: product.priceStatus ?? "",
     categories: product.categories
@@ -107,17 +106,26 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
         .filter(Boolean);
 
       const description = (record.description ?? "").trim() || null;
-      const dimensions = (record.dimensions ?? "").trim() || null;
       const position = Number.parseInt(record.position ?? "0", 10) || 0;
 
-      const priceRaw = (record.price ?? "").trim().replace(",", ".");
-      let price: number | null = null;
-      if (priceRaw) {
-        const parsedPrice = Number.parseFloat(priceRaw);
-        if (Number.isNaN(parsedPrice)) {
-          throw new Error(`Prix invalide : "${record.price}"`);
+      const dimensionEntries = (record.dimensions ?? "")
+        .split("|")
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+
+      const dimensions: { dimension: string; price: number | null }[] = [];
+      for (const entry of dimensionEntries) {
+        const sep = entry.indexOf(":");
+        const dimension = (sep >= 0 ? entry.slice(0, sep) : entry).trim();
+        const priceRaw = (sep >= 0 ? entry.slice(sep + 1) : "").trim().replace(",", ".");
+        let price: number | null = null;
+        if (priceRaw) {
+          price = Number.parseFloat(priceRaw);
+          if (Number.isNaN(price)) {
+            throw new Error(`Prix invalide pour la dimension "${dimension}" : "${priceRaw}"`);
+          }
         }
-        price = parsedPrice;
+        dimensions.push({ dimension, price });
       }
 
       const priceUnitRaw = (record.priceUnit ?? "").trim();
@@ -148,8 +156,6 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
           data: {
             name,
             description,
-            dimensions,
-            price,
             priceUnit,
             priceStatus,
             position,
@@ -157,6 +163,10 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             images: {
               deleteMany: {},
               create: imageUrls.map((url, idx) => ({ url, position: idx })),
+            },
+            dimensions: {
+              deleteMany: {},
+              create: dimensions.map((d, idx) => ({ ...d, position: idx })),
             },
           },
         });
@@ -176,13 +186,12 @@ export async function importProductsCsv(csvContent: string): Promise<ImportSumma
             name,
             slug,
             description,
-            dimensions,
-            price,
             priceUnit,
             priceStatus,
             position,
             categories: { connect: categoryIds.map((id) => ({ id })) },
             images: { create: imageUrls.map((url, idx) => ({ url, position: idx })) },
+            dimensions: { create: dimensions.map((d, idx) => ({ ...d, position: idx })) },
           },
         });
 

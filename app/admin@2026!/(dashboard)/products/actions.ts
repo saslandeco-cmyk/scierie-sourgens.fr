@@ -16,8 +16,6 @@ export type ProductFormState = { error?: string };
 const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
   description: z.string().optional(),
-  dimensions: z.string().optional(),
-  price: z.coerce.number().nonnegative("Le prix doit être positif.").optional(),
   priceUnit: z.enum(UNIT_OPTIONS).optional().or(z.literal("")),
   priceStatus: z.enum(STATUS_OPTIONS).optional().or(z.literal("")),
   categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
@@ -28,13 +26,36 @@ function parseProductForm(formData: FormData) {
   return schema.safeParse({
     name: formData.get("name"),
     description: formData.get("description") || undefined,
-    dimensions: formData.get("dimensions") || undefined,
-    price: formData.get("price") || undefined,
     priceUnit: formData.get("priceUnit") || undefined,
     priceStatus: formData.get("priceStatus") || undefined,
     categoryIds: formData.getAll("categoryIds"),
     position: formData.get("position"),
   });
+}
+
+type DimensionInput = { dimension: string; price: number | null };
+
+function parseDimensions(formData: FormData): { data: DimensionInput[] } | { error: string } {
+  const dimensionValues = formData.getAll("dimension").map((v) => String(v).trim());
+  const priceValues = formData.getAll("dimensionPrice").map((v) => String(v).trim());
+  const data: DimensionInput[] = [];
+
+  for (let i = 0; i < dimensionValues.length; i++) {
+    const dimension = dimensionValues[i];
+    const priceRaw = priceValues[i] ?? "";
+    if (!dimension && !priceRaw) continue;
+
+    let price: number | null = null;
+    if (priceRaw) {
+      price = Number.parseFloat(priceRaw);
+      if (Number.isNaN(price) || price < 0) {
+        return { error: `Prix invalide pour la dimension "${dimension || "(sans nom)"}".` };
+      }
+    }
+    data.push({ dimension, price });
+  }
+
+  return { data };
 }
 
 async function uploadNewImages(formData: FormData): Promise<string[]> {
@@ -50,6 +71,11 @@ export async function createProduct(
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides." };
+  }
+
+  const dimensionsResult = parseDimensions(formData);
+  if ("error" in dimensionsResult) {
+    return { error: dimensionsResult.error };
   }
 
   try {
@@ -70,13 +96,12 @@ export async function createProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
-        dimensions: parsed.data.dimensions ?? null,
-        price: parsed.data.price ?? null,
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
         categories: { connect: parsed.data.categoryIds.map((id) => ({ id })) },
         images: { create: imageUrls.map((url, i) => ({ url, position: i })) },
+        dimensions: { create: dimensionsResult.data.map((d, i) => ({ ...d, position: i })) },
       },
     });
   } catch (err) {
@@ -97,6 +122,11 @@ export async function updateProduct(
 
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Données invalides." };
+  }
+
+  const dimensionsResult = parseDimensions(formData);
+  if ("error" in dimensionsResult) {
+    return { error: dimensionsResult.error };
   }
 
   try {
@@ -130,8 +160,6 @@ export async function updateProduct(
         name: parsed.data.name,
         slug,
         description: parsed.data.description ?? null,
-        dimensions: parsed.data.dimensions ?? null,
-        price: parsed.data.price ?? null,
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
@@ -139,6 +167,10 @@ export async function updateProduct(
         images: {
           deleteMany: { id: { in: [...removeImageIds] } },
           create: newImageUrls.map((url, i) => ({ url, position: keptCount + i })),
+        },
+        dimensions: {
+          deleteMany: {},
+          create: dimensionsResult.data.map((d, i) => ({ ...d, position: i })),
         },
       },
     });

@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 
 const productInclude = {
   images: { orderBy: { position: "asc" as const } },
+  dimensions: { orderBy: { position: "asc" as const } },
 };
 
 export function getCategoryTree() {

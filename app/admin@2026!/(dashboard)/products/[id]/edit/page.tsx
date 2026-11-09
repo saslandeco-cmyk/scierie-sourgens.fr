@@ -11,7 +11,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { categories: true, images: { orderBy: { position: "asc" } } },
+    include: {
+      categories: true,
+      images: { orderBy: { position: "asc" } },
+      dimensions: { orderBy: { position: "asc" } },
+    },
   });
   if (!product) {
     notFound();
@@ -30,8 +34,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         defaults={{
           name: product.name,
           description: product.description ?? "",
-          dimensions: product.dimensions ?? "",
-          price: product.price,
+          dimensions: product.dimensions.map((d) => ({ dimension: d.dimension, price: d.price })),
           priceUnit: product.priceUnit,
           priceStatus: product.priceStatus,
           categoryIds: product.categories.map((c) => c.id),

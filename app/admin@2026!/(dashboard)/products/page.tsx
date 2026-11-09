@@ -14,6 +14,7 @@ export default async function ProductsPage() {
     include: {
       categories: { include: { parent: true } },
       images: { orderBy: { position: "asc" }, take: 1 },
+      dimensions: { orderBy: { position: "asc" } },
     },
   });
 
@@ -52,7 +53,14 @@ export default async function ProductsPage() {
               <tr key={product.id}>
                 <td>{product.images[0] && <img src={product.images[0].url} alt={product.name} />}</td>
                 <td>{product.name}</td>
-                <td>{[formatPrice(product.price, product.priceUnit), formatStatus(product.priceStatus)].filter(Boolean).join(" — ")}</td>
+                <td>
+                  {[
+                    ...product.dimensions.map((d) => [d.dimension, formatPrice(d.price, product.priceUnit)].filter(Boolean).join(" — ")),
+                    formatStatus(product.priceStatus),
+                  ]
+                    .filter(Boolean)
+                    .join(", ")}
+                </td>
                 <td>
                   {product.categories
                     .map((c) => (c.parent ? `${c.parent.name} > ${c.name}` : c.name))
