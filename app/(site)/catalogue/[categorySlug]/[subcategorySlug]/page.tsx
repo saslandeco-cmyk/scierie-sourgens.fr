@@ -41,7 +41,6 @@ export default async function SubcategoryPage({
                 <ProductGallery images={product.images} name={product.name} />
                 <div className={s.productBody}>
                   <h3>{product.name}</h3>
-                  {product.longDescription && <p>{product.longDescription}</p>}
                   {product.dimensions.map((d) => {
                     const priceText = formatPrice(d.price, product.priceUnit);
                     if (!d.dimension && !priceText && !d.description) return null;
@@ -60,6 +59,7 @@ export default async function SubcategoryPage({
                       <span className={s.priceStatus}>{statusText}</span>
                     </p>
                   )}
+                  {product.longDescription && <p>{product.longDescription}</p>}
                 </div>
               </div>
             );
@@ -82,7 +82,6 @@ export default async function SubcategoryPage({
                   )}
                   <div className={s.cardBody}>
                     <h3>{product.name}</h3>
-                    {product.longDescription && <p>{product.longDescription}</p>}
                     {product.dimensions.map((d) => {
                       const priceText = formatPrice(d.price, product.priceUnit);
                       if (!d.dimension && !priceText && !d.description) return null;
@@ -101,6 +100,7 @@ export default async function SubcategoryPage({
                         <span className={s.priceStatus}>{statusText}</span>
                       </p>
                     )}
+                    {product.longDescription && <p>{product.longDescription}</p>}
                   </div>
                 </div>
               );
