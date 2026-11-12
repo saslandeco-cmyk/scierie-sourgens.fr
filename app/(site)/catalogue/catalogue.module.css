@@ -192,9 +192,9 @@
 
 .dimensionRow {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: baseline;
-  gap: 12px;
+  gap: 6px;
 }
 
 .dimensionLabel {
