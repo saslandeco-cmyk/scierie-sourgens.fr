@@ -183,6 +183,13 @@
   color: #666;
 }
 
+.dimensionListTwoCol {
+  display: grid;
+  grid-template-rows: repeat(6, auto);
+  grid-auto-flow: column;
+  column-gap: 24px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;

@@ -41,19 +41,28 @@ export default async function SubcategoryPage({
                 <ProductGallery images={product.images} name={product.name} />
                 <div className={s.productBody}>
                   <h3>{product.name}</h3>
-                  {product.dimensions.map((d) => {
-                    const priceText = formatPrice(d.price, product.priceUnit);
-                    if (!d.dimension && !priceText && !d.description) return null;
+                  {(() => {
+                    const dimensionRows = product.dimensions
+                      .map((d) => {
+                        const priceText = formatPrice(d.price, product.priceUnit);
+                        if (!d.dimension && !priceText && !d.description) return null;
+                        return (
+                          <p key={d.id}>
+                            {d.description}
+                            {d.description && (d.dimension || priceText) && " "}
+                            {d.dimension}
+                            {d.dimension && priceText && " · "}
+                            {priceText && <span className={s.priceTag}>{priceText}</span>}
+                          </p>
+                        );
+                      })
+                      .filter(Boolean);
                     return (
-                      <p key={d.id}>
-                        {d.description}
-                        {d.description && (d.dimension || priceText) && " "}
-                        {d.dimension}
-                        {d.dimension && priceText && " · "}
-                        {priceText && <span className={s.priceTag}>{priceText}</span>}
-                      </p>
+                      <div className={dimensionRows.length > 6 ? s.dimensionListTwoCol : undefined}>
+                        {dimensionRows}
+                      </div>
                     );
-                  })}
+                  })()}
                   {statusText && (
                     <p>
                       <span className={s.priceStatus}>{statusText}</span>
