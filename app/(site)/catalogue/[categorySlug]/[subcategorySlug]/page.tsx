@@ -50,10 +50,11 @@ export default async function SubcategoryPage({
                           <p key={d.id} className={s.dimensionRow}>
                             <span
                               className={
-                                product.name === "OSB 3" ||
-                                product.name === "PLANCHES CLOTURE A EMBOITER CL4 VERT"
+                                product.name === "OSB 3"
                                   ? `${s.dimensionLabel} ${s.dimensionLabelOsb3}`
-                                  : s.dimensionLabel
+                                  : product.name === "PLANCHES CLOTURE A EMBOITER CL4 VERT"
+                                    ? `${s.dimensionLabel} ${s.dimensionLabelPlanchesCloture}`
+                                    : s.dimensionLabel
                               }
                             >
                               {d.description}

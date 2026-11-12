@@ -206,6 +206,10 @@
   flex: 0 0 250px;
 }
 
+.dimensionLabelPlanchesCloture {
+  flex: 0 0 280px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;
