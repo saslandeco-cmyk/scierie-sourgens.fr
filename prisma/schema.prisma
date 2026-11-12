@@ -30,6 +30,7 @@ model Product {
   slug                  String             @unique
   longDescription       String?
   priceUnit             String?
+  priceUnitSuffix       String?
   priceStatus           String?
   position              Int                @default(0)
   categories            Category[]         @relation("CategoryProducts")

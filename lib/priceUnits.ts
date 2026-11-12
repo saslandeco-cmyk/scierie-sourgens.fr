@@ -7,7 +7,12 @@ export function formatStatus(priceStatus: string | null | undefined): string | n
   return priceStatus.charAt(0).toUpperCase() + priceStatus.slice(1);
 }
 
-export function formatPrice(price: number | null | undefined, priceUnit: string | null | undefined): string | null {
+export function formatPrice(
+  price: number | null | undefined,
+  priceUnit: string | null | undefined,
+  priceUnitSuffix?: string | null,
+): string | null {
   if (price == null) return null;
-  return priceUnit ? `${price.toFixed(2)} € TTC / ${priceUnit}` : `${price.toFixed(2)} € TTC`;
+  const unitText = [priceUnit, priceUnitSuffix].filter(Boolean).join(" ");
+  return unitText ? `${price.toFixed(2)} € TTC / ${unitText}` : `${price.toFixed(2)} € TTC`;
 }

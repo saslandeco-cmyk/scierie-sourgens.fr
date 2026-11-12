@@ -18,6 +18,7 @@ type Props = {
     longDescription?: string | null;
     dimensions?: DimensionDefault[];
     priceUnit?: string | null;
+    priceUnitSuffix?: string | null;
     priceStatus?: string | null;
     categoryIds?: string[];
     position?: number;
@@ -54,6 +55,10 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
             </option>
           ))}
         </select>
+      </label>
+      <label>
+        Précision unité (optionnelle, affichée juste après l&apos;unité de prix)
+        <input type="text" name="priceUnitSuffix" defaultValue={defaults?.priceUnitSuffix ?? ""} />
       </label>
       <label>
         Statut (optionnel)
