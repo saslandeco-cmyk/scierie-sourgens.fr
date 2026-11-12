@@ -48,7 +48,13 @@ export default async function SubcategoryPage({
                         if (!d.dimension && !priceText && !d.description) return null;
                         return (
                           <p key={d.id} className={s.dimensionRow}>
-                            <span className={s.dimensionLabel}>
+                            <span
+                              className={
+                                product.name === "OSB 3"
+                                  ? `${s.dimensionLabel} ${s.dimensionLabelOsb3}`
+                                  : s.dimensionLabel
+                              }
+                            >
                               {d.description}
                               {d.description && d.dimension && " "}
                               {d.dimension}
