@@ -194,10 +194,11 @@
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
-  gap: 6px;
+  gap: 12px;
 }
 
 .dimensionLabel {
+  flex: 0 0 140px;
   min-width: 0;
 }
 
