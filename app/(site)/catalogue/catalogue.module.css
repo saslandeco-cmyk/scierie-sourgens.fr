@@ -192,15 +192,14 @@
 
 .dimensionRow {
   display: flex;
-  flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: baseline;
   gap: 1px;
 }
 
 .dimensionLabel {
-  flex-shrink: 0;
-  white-space: nowrap;
+  flex: 0 0 140px;
+  min-width: 0;
 }
 
 .priceTag {
