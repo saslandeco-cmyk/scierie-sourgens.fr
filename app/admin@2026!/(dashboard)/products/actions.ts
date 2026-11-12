@@ -17,7 +17,6 @@ const schema = z.object({
   name: z.string().min(1, "Le nom est requis."),
   longDescription: z.string().optional(),
   priceUnit: z.enum(UNIT_OPTIONS).optional().or(z.literal("")),
-  priceUnitSuffix: z.string().optional(),
   priceStatus: z.enum(STATUS_OPTIONS).optional().or(z.literal("")),
   categoryIds: z.array(z.string()).min(1, "Choisissez au moins une catégorie."),
   position: z.coerce.number().int().default(0),
@@ -28,26 +27,32 @@ function parseProductForm(formData: FormData) {
     name: formData.get("name"),
     longDescription: formData.get("longDescription") || undefined,
     priceUnit: formData.get("priceUnit") || undefined,
-    priceUnitSuffix: formData.get("priceUnitSuffix") || undefined,
     priceStatus: formData.get("priceStatus") || undefined,
     categoryIds: formData.getAll("categoryIds"),
     position: formData.get("position"),
   });
 }
 
-type DimensionInput = { dimension: string; price: number | null; description: string | null };
+type DimensionInput = {
+  dimension: string;
+  price: number | null;
+  priceUnitSuffix: string | null;
+  description: string | null;
+};
 
 function parseDimensions(formData: FormData): { data: DimensionInput[] } | { error: string } {
   const dimensionValues = formData.getAll("dimension").map((v) => String(v).trim());
   const priceValues = formData.getAll("dimensionPrice").map((v) => String(v).trim());
+  const priceUnitSuffixValues = formData.getAll("dimensionPriceUnitSuffix").map((v) => String(v).trim());
   const descriptionValues = formData.getAll("dimensionDescription").map((v) => String(v).trim());
   const data: DimensionInput[] = [];
 
   for (let i = 0; i < dimensionValues.length; i++) {
     const dimension = dimensionValues[i];
     const priceRaw = priceValues[i] ?? "";
+    const priceUnitSuffix = priceUnitSuffixValues[i] || "";
     const description = descriptionValues[i] || "";
-    if (!dimension && !priceRaw && !description) continue;
+    if (!dimension && !priceRaw && !priceUnitSuffix && !description) continue;
 
     let price: number | null = null;
     if (priceRaw) {
@@ -56,7 +61,7 @@ function parseDimensions(formData: FormData): { data: DimensionInput[] } | { err
         return { error: `Prix invalide pour la dimension "${dimension || "(sans nom)"}".` };
       }
     }
-    data.push({ dimension, price, description: description || null });
+    data.push({ dimension, price, priceUnitSuffix: priceUnitSuffix || null, description: description || null });
   }
 
   return { data };
@@ -101,7 +106,6 @@ export async function createProduct(
         slug,
         longDescription: parsed.data.longDescription ?? null,
         priceUnit: parsed.data.priceUnit || null,
-        priceUnitSuffix: parsed.data.priceUnitSuffix?.trim() || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
         categories: { connect: parsed.data.categoryIds.map((id) => ({ id })) },
@@ -166,7 +170,6 @@ export async function updateProduct(
         slug,
         longDescription: parsed.data.longDescription ?? null,
         priceUnit: parsed.data.priceUnit || null,
-        priceUnitSuffix: parsed.data.priceUnitSuffix?.trim() || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
         categories: { set: parsed.data.categoryIds.map((cid) => ({ id: cid })) },

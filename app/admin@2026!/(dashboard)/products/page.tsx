@@ -55,7 +55,7 @@ export default async function ProductsPage() {
                 <td>{product.name}</td>
                 <td>
                   {[
-                    ...product.dimensions.map((d) => [d.dimension, formatPrice(d.price, product.priceUnit, product.priceUnitSuffix)].filter(Boolean).join(" — ")),
+                    ...product.dimensions.map((d) => [d.dimension, formatPrice(d.price, product.priceUnit, d.priceUnitSuffix)].filter(Boolean).join(" — ")),
                     formatStatus(product.priceStatus),
                   ]
                     .filter(Boolean)

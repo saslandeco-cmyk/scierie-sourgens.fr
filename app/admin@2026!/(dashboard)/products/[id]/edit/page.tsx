@@ -34,9 +34,13 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         defaults={{
           name: product.name,
           longDescription: product.longDescription,
-          dimensions: product.dimensions.map((d) => ({ dimension: d.dimension, price: d.price, description: d.description })),
+          dimensions: product.dimensions.map((d) => ({
+            dimension: d.dimension,
+            price: d.price,
+            priceUnitSuffix: d.priceUnitSuffix,
+            description: d.description,
+          })),
           priceUnit: product.priceUnit,
-          priceUnitSuffix: product.priceUnitSuffix,
           priceStatus: product.priceStatus,
           categoryIds: product.categories.map((c) => c.id),
           position: product.position,

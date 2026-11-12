@@ -44,7 +44,7 @@ export default async function SubcategoryPage({
                   {(() => {
                     const dimensionRows = product.dimensions
                       .map((d) => {
-                        const priceText = formatPrice(d.price, product.priceUnit, product.priceUnitSuffix);
+                        const priceText = formatPrice(d.price, product.priceUnit, d.priceUnitSuffix);
                         if (!d.dimension && !priceText && !d.description) return null;
                         return (
                           <p key={d.id} className={s.dimensionRow}>
@@ -102,7 +102,7 @@ export default async function SubcategoryPage({
                     {(() => {
                       const dimensionRows = product.dimensions
                         .map((d) => {
-                          const priceText = formatPrice(d.price, product.priceUnit, product.priceUnitSuffix);
+                          const priceText = formatPrice(d.price, product.priceUnit, d.priceUnitSuffix);
                           if (!d.dimension && !priceText && !d.description) return null;
                           return (
                             <p key={d.id} className={s.dimensionRow}>

@@ -3,7 +3,12 @@
 import { useState } from "react";
 import s from "../../admin.module.css";
 
-export type DimensionDefault = { dimension: string; price: number | null; description?: string | null };
+export type DimensionDefault = {
+  dimension: string;
+  price: number | null;
+  priceUnitSuffix?: string | null;
+  description?: string | null;
+};
 
 type Row = DimensionDefault & { key: string };
 
@@ -21,7 +26,7 @@ export default function DimensionsField({ defaults }: Props) {
   const [rows, setRows] = useState<Row[]>(() => (defaults ?? []).map((d) => ({ ...d, key: nextKey() })));
 
   function addRow() {
-    setRows((prev) => [...prev, { key: nextKey(), dimension: "", price: null, description: "" }]);
+    setRows((prev) => [...prev, { key: nextKey(), dimension: "", price: null, priceUnitSuffix: "", description: "" }]);
   }
 
   function removeRow(key: string) {
@@ -36,6 +41,12 @@ export default function DimensionsField({ defaults }: Props) {
           <div className={s.dimensionRowTop}>
             <input type="text" name="dimension" placeholder="ex. 2.40m/170/15mm" defaultValue={row.dimension} />
             <input type="number" name="dimensionPrice" step="0.01" min="0" placeholder="Prix (€)" defaultValue={row.price ?? ""} />
+            <input
+              type="text"
+              name="dimensionPriceUnitSuffix"
+              placeholder="Précision unité (optionnel)"
+              defaultValue={row.priceUnitSuffix ?? ""}
+            />
             <button type="button" onClick={() => removeRow(row.key)} aria-label="Retirer cette dimension">
               ×
             </button>
