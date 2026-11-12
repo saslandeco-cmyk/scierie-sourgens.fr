@@ -47,11 +47,12 @@ export default async function SubcategoryPage({
                         const priceText = formatPrice(d.price, product.priceUnit);
                         if (!d.dimension && !priceText && !d.description) return null;
                         return (
-                          <p key={d.id}>
-                            {d.description}
-                            {d.description && (d.dimension || priceText) && " "}
-                            {d.dimension}
-                            {d.dimension && priceText && " · "}
+                          <p key={d.id} className={s.dimensionRow}>
+                            <span className={s.dimensionLabel}>
+                              {d.description}
+                              {d.description && d.dimension && " "}
+                              {d.dimension}
+                            </span>
                             {priceText && <span className={s.priceTag}>{priceText}</span>}
                           </p>
                         );

@@ -190,9 +190,21 @@
   column-gap: 24px;
 }
 
+.dimensionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.dimensionLabel {
+  min-width: 0;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .priceStatus {
