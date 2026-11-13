@@ -1,10 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
 import { formatPrice, formatStatus } from "@/lib/priceUnits";
 import ProductGallery from "../../ProductGallery";
 import RealisationsGallery from "../../RealisationsGallery";
-import ZoomableImage from "../../ZoomableImage";
 import s from "../../catalogue.module.css";
 
 export const dynamic = "force-dynamic";
@@ -91,20 +91,27 @@ export default async function SubcategoryPage({
           <h2 className={`${s.title} ${s.suggestedTitle}`}>Vous pourriez avoir besoin de :</h2>
           <div className={s.grid}>
             {subcategory.suggestedProducts.map((product) => {
+              const targetCategory =
+                product.categories.find((c) => c.parentId !== null) ?? product.categories[0];
+              const href = targetCategory
+                ? targetCategory.parent
+                  ? `/catalogue/${targetCategory.parent.slug}/${targetCategory.slug}`
+                  : `/catalogue/${targetCategory.slug}`
+                : "/catalogue";
               return (
-                <div key={product.id} className={s.card}>
+                <Link key={product.id} href={href} className={s.card}>
                   {product.images[0] && (
-                    <ZoomableImage
-                      src={product.images[0].url}
-                      alt={product.name}
-                      sizes="220px"
-                      className={s.cardImage}
-                    />
+                    <div className={s.cardImage}>
+                      <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
+                      <div className={s.cardImageOverlay}>
+                        <span className={s.cardImageOverlayButton}>Voir le produit</span>
+                      </div>
+                    </div>
                   )}
                   <div className={s.cardBody}>
                     <h3>{product.name}</h3>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
