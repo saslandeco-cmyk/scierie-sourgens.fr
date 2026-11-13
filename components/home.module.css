@@ -474,13 +474,6 @@
   padding: 18px clamp(16px, 2.8vw, 28px) 22px;
   text-align: center;
   background:
-    repeating-linear-gradient(
-      96deg,
-      rgba(160, 120, 70, 0.05) 0 2px,
-      transparent 2px 9px,
-      rgba(140, 100, 60, 0.04) 9px 10px,
-      transparent 10px 31px
-    ),
     radial-gradient(ellipse at 30% 50%, #f3e7d3, transparent 70%),
     var(--wood);
 }
