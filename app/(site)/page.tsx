@@ -51,7 +51,7 @@ const products = [
     img: "/images/pin-des-landes.jpg",
     Icon: PineCone,
     label: ["Entretien du bois ", "et quincaillerie"],
-    href: "/catalogue",
+    href: "/catalogue/entretien-du-bois-et-quincaillerie",
   },
 ];
 
