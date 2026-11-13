@@ -41,7 +41,12 @@ const products = [
     label: ["Aménagement", "intérieurs"],
     href: "/catalogue/amenagement-interieur",
   },
-  { img: "/images/bois-sur-mesure.jpg", Icon: RingsIcon, label: ["Aménagement", "extérieur"], href: "/catalogue" },
+  {
+    img: "/images/bois-sur-mesure.jpg",
+    Icon: RingsIcon,
+    label: ["Aménagement", "extérieur"],
+    href: "/catalogue/amenagement-exterieur",
+  },
   {
     img: "/images/pin-des-landes.jpg",
     Icon: PineCone,
