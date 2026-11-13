@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   CladdingIcon,
@@ -123,6 +124,11 @@ export default function Home() {
               <li key={img} className={s.product}>
                 <div className={s.productImg}>
                   <Image src={img} alt={label.join(" ")} fill sizes="(max-width: 700px) 50vw, 17vw" />
+                  <div className={s.productOverlay}>
+                    <Link href="/catalogue" className={s.productOverlayButton}>
+                      Voir les produits
+                    </Link>
+                  </div>
                 </div>
                 <div className={s.productLabel}>
                   <Icon className={s.productIcon} />

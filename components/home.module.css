@@ -540,6 +540,41 @@
   object-fit: cover;
 }
 
+.productOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.product:hover .productOverlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.productOverlayButton {
+  padding: 10px 18px;
+  background: #fff;
+  color: var(--green-900);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.productOverlayButton:hover {
+  background: #f2ede0;
+}
+
 .productLabel {
   flex: 1;
   display: flex;
