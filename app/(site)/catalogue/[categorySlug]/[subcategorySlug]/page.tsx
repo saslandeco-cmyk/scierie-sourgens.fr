@@ -53,7 +53,8 @@ export default async function SubcategoryPage({
                               className={
                                 product.name === "OSB 3"
                                   ? `${s.dimensionLabel} ${s.dimensionLabelOsb3}`
-                                  : product.name === "PLANCHES CLOTURE A EMBOITER CL4 VERT"
+                                  : product.name === "PLANCHES CLOTURE A EMBOITER CL4 VERT" ||
+                                      product.name === "PARQUET À CLOUER XXL PIN DES LANDES"
                                     ? `${s.dimensionLabel} ${s.dimensionLabelPlanchesCloture}`
                                     : s.dimensionLabel
                               }
