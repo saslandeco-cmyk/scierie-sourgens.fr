@@ -33,7 +33,7 @@ const products = [
     label: ["Bois de", "construction"],
     href: "/catalogue/bois-de-charpente",
   },
-  { img: "/images/terrasses.jpg", Icon: DeckIcon, label: ["Terrasses"], href: "/catalogue" },
+  { img: "/images/terrasses.jpg", Icon: DeckIcon, label: ["Terrasses"], href: "/catalogue/lames-de-terrasse" },
   { img: "/images/bardages.jpg", Icon: CladdingIcon, label: ["Bardages /", "clins"], href: "/catalogue" },
   { img: "/images/parquets.jpg", Icon: ParquetIcon, label: ["Aménagement", "intérieurs"], href: "/catalogue" },
   { img: "/images/bois-sur-mesure.jpg", Icon: RingsIcon, label: ["Aménagement", "extérieur"], href: "/catalogue" },
