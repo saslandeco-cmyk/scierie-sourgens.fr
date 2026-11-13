@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   CladdingIcon,
@@ -60,7 +61,13 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
   return (
     <header className={s.header}>
       <Link href="/#accueil" className={s.brand} aria-label="Scierie R. Sourgens — accueil">
-        <PineCone className={s.brandCone} />
+        <Image
+          src="/images/Scierie-sourgens-HD.png"
+          alt="Scierie R. Sourgens"
+          width={77}
+          height={58}
+          className={s.brandCone}
+        />
         <span className={s.brandText}>
           <span className={s.brandName}>Scierie R. Sourgens</span>
           <span className={s.brandPlace}>Uza · Landes</span>

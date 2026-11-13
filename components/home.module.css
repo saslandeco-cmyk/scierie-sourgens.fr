@@ -21,9 +21,9 @@
 }
 
 .brandCone {
-  width: 46px;
+  width: 77px;
   height: 58px;
-  color: #e9dcc1;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
