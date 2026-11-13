@@ -35,7 +35,12 @@ const products = [
   },
   { img: "/images/terrasses.jpg", Icon: DeckIcon, label: ["Terrasses"], href: "/catalogue/lames-de-terrasse" },
   { img: "/images/bardages.jpg", Icon: CladdingIcon, label: ["Bardages /", "clins"], href: "/catalogue/bardage-et-clin" },
-  { img: "/images/parquets.jpg", Icon: ParquetIcon, label: ["Aménagement", "intérieurs"], href: "/catalogue" },
+  {
+    img: "/images/parquets.jpg",
+    Icon: ParquetIcon,
+    label: ["Aménagement", "intérieurs"],
+    href: "/catalogue/amenagement-interieur",
+  },
   { img: "/images/bois-sur-mesure.jpg", Icon: RingsIcon, label: ["Aménagement", "extérieur"], href: "/catalogue" },
   {
     img: "/images/pin-des-landes.jpg",
