@@ -40,6 +40,7 @@ export function getCategoryBySlug(slug: string) {
       children: { orderBy: { position: "asc" } },
       products: { orderBy: { position: "asc" }, include: productInclude },
       suggestedProducts: { orderBy: { position: "asc" }, include: productInclude },
+      realisationImages: { orderBy: { position: "asc" } },
     },
   });
 }

@@ -8,14 +8,6 @@ import s from "../../catalogue.module.css";
 
 export const dynamic = "force-dynamic";
 
-const REALISATIONS = [
-  "/images/realisations/20210224_123524-1.jpg",
-  "/images/realisations/20240724_150240.JPG",
-  "/images/realisations/20240724_150338.JPG",
-  "/images/realisations/25b94302-9a01-4aa9-833b-3a12f3346d22.webp",
-  "/images/realisations/45345.jpg",
-];
-
 export default async function SubcategoryPage({
   params,
 }: {
@@ -145,14 +137,18 @@ export default async function SubcategoryPage({
         </>
       )}
 
-      <h2 className={`${s.title} ${s.suggestedTitle}`}>Réalisations clients</h2>
-      <div className={s.realisationsGrid}>
-        {REALISATIONS.map((src) => (
-          <div key={src} className={s.realisationImage}>
-            <Image src={src} alt="Réalisation client" fill sizes="(max-width: 700px) 50vw, 25vw" />
+      {subcategory.realisationImages.length > 0 && (
+        <>
+          <h2 className={`${s.title} ${s.suggestedTitle}`}>Réalisations clients</h2>
+          <div className={s.realisationsGrid}>
+            {subcategory.realisationImages.map((img) => (
+              <div key={img.id} className={s.realisationImage}>
+                <Image src={img.url} alt="Réalisation client" fill sizes="(max-width: 700px) 50vw, 25vw" />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }

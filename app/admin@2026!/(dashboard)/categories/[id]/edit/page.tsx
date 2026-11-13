@@ -11,7 +11,10 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
   const { id } = await params;
   const category = await prisma.category.findUnique({
     where: { id },
-    include: { suggestedProducts: { select: { id: true } } },
+    include: {
+      suggestedProducts: { select: { id: true } },
+      realisationImages: { orderBy: { position: "asc" } },
+    },
   });
   if (!category) {
     notFound();
@@ -35,6 +38,7 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
         action={updateCategory.bind(null, id)}
         rootCategories={rootCategories}
         allProducts={allProducts}
+        isSubcategory={isSubcategory}
         defaults={{
           name: category.name,
           description: category.description ?? "",
@@ -42,6 +46,7 @@ export default async function EditCategoryPage({ params }: { params: Promise<{ i
           parentId: category.parentId,
           bannerUrl: category.bannerUrl,
           suggestedProductIds: category.suggestedProducts.map((p) => p.id),
+          realisationImages: category.realisationImages.map((img) => ({ id: img.id, url: img.url })),
         }}
         submitLabel="Enregistrer"
       />

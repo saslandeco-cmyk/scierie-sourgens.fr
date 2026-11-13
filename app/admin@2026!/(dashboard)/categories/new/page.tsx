@@ -25,6 +25,7 @@ export default async function NewCategoryPage({
       <CategoryForm
         action={createCategory}
         rootCategories={rootCategories}
+        isSubcategory={Boolean(parentId)}
         defaults={{ parentId }}
         submitLabel="Créer"
       />

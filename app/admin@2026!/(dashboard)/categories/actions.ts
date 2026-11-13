@@ -45,6 +45,11 @@ function getBannerFile(formData: FormData): File | null {
   return file instanceof File && file.size > 0 ? file : null;
 }
 
+async function uploadNewRealisationImages(formData: FormData): Promise<string[]> {
+  const files = formData.getAll("realisationImages").filter((f): f is File => f instanceof File && f.size > 0);
+  return Promise.all(files.map((file) => uploadImage(file, "categories-realisations")));
+}
+
 export async function createCategory(
   _prevState: CategoryFormState,
   formData: FormData,
@@ -64,6 +69,7 @@ export async function createCategory(
 
     const bannerFile = getBannerFile(formData);
     const bannerUrl = bannerFile ? await uploadImage(bannerFile, "categories") : null;
+    const realisationImageUrls = await uploadNewRealisationImages(formData);
 
     await prisma.category.create({
       data: {
@@ -73,6 +79,9 @@ export async function createCategory(
         position: parsed.data.position,
         parentId,
         bannerUrl,
+        realisationImages: {
+          create: realisationImageUrls.map((url, i) => ({ url, position: i })),
+        },
       },
     });
   } catch (err) {
@@ -97,7 +106,7 @@ export async function updateCategory(
   }
 
   try {
-    const current = await prisma.category.findUnique({ where: { id } });
+    const current = await prisma.category.findUnique({ where: { id }, include: { realisationImages: true } });
     if (!current) {
       return { error: "Catégorie introuvable." };
     }
@@ -140,6 +149,13 @@ export async function updateCategory(
 
     const suggestedProductIds = formData.getAll("suggestedProductIds").map(String);
 
+    const removeRealisationImageIds = new Set(formData.getAll("removeRealisationImageIds").map(String));
+    const realisationImagesToRemove = current.realisationImages.filter((img) =>
+      removeRealisationImageIds.has(img.id),
+    );
+    const newRealisationImageUrls = await uploadNewRealisationImages(formData);
+    const keptRealisationCount = current.realisationImages.length - realisationImagesToRemove.length;
+
     await prisma.category.update({
       where: { id },
       data: {
@@ -150,8 +166,14 @@ export async function updateCategory(
         parentId,
         bannerUrl,
         suggestedProducts: { set: suggestedProductIds.map((pid) => ({ id: pid })) },
+        realisationImages: {
+          deleteMany: { id: { in: [...removeRealisationImageIds] } },
+          create: newRealisationImageUrls.map((url, i) => ({ url, position: keptRealisationCount + i })),
+        },
       },
     });
+
+    await Promise.all(realisationImagesToRemove.map((img) => deleteImage(img.url)));
   } catch (err) {
     return { error: err instanceof Error ? err.message : "Erreur inattendue." };
   }
@@ -194,10 +216,13 @@ export async function deleteCategory(id: string) {
     throw new Error("Supprimez d'abord les sous-catégories et produits rattachés.");
   }
 
-  const category = await prisma.category.findUnique({ where: { id } });
+  const category = await prisma.category.findUnique({ where: { id }, include: { realisationImages: true } });
   await prisma.category.delete({ where: { id } });
   if (category?.bannerUrl) {
     await deleteImage(category.bannerUrl);
+  }
+  if (category) {
+    await Promise.all(category.realisationImages.map((img) => deleteImage(img.url)));
   }
 
   revalidatePath(CATEGORIES_PATH);

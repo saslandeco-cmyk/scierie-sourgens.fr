@@ -2,15 +2,18 @@
 
 import { useActionState } from "react";
 import type { CategoryFormState } from "./actions";
+import ImagePicker from "../products/ImagePicker";
 import s from "../../admin.module.css";
 
 type RootCategory = { id: string; name: string };
 type ProductOption = { id: string; name: string };
+type ExistingImage = { id: string; url: string };
 
 type Props = {
   action: (prevState: CategoryFormState, formData: FormData) => Promise<CategoryFormState>;
   rootCategories: RootCategory[];
   allProducts?: ProductOption[];
+  isSubcategory?: boolean;
   defaults?: {
     name?: string;
     description?: string;
@@ -18,14 +21,23 @@ type Props = {
     parentId?: string | null;
     bannerUrl?: string | null;
     suggestedProductIds?: string[];
+    realisationImages?: ExistingImage[];
   };
   submitLabel: string;
 };
 
 const initialState: CategoryFormState = {};
 
-export default function CategoryForm({ action, rootCategories, allProducts, defaults, submitLabel }: Props) {
+export default function CategoryForm({
+  action,
+  rootCategories,
+  allProducts,
+  isSubcategory,
+  defaults,
+  submitLabel,
+}: Props) {
   const [state, formAction, pending] = useActionState(action, initialState);
+  const existingRealisationImages = defaults?.realisationImages ?? [];
 
   return (
     <form className={s.form} action={formAction}>
@@ -87,6 +99,30 @@ export default function CategoryForm({ action, rootCategories, allProducts, defa
               {p.name}
             </label>
           ))}
+        </fieldset>
+      )}
+
+      {isSubcategory && (
+        <fieldset className={s.checkboxList}>
+          <legend>Réalisations clients (galerie affichée en front-office)</legend>
+
+          {existingRealisationImages.length > 0 && (
+            <div className={s.imageGrid}>
+              {existingRealisationImages.map((img) => (
+                <label key={img.id} className={s.imageThumb}>
+                  <img src={img.url} alt="" />
+                  <span className={s.imageRemove}>
+                    <input type="checkbox" name="removeRealisationImageIds" value={img.id} /> Supprimer
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+
+          <ImagePicker
+            name="realisationImages"
+            label={existingRealisationImages.length > 0 ? "Ajouter des photos" : "Photos"}
+          />
         </fieldset>
       )}
 
