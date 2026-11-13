@@ -4,6 +4,7 @@ import { deleteProduct } from "./actions";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
 import { formatPrice, formatStatus } from "@/lib/priceUnits";
 import ConfirmButton from "../ConfirmButton";
+import ProductSearch from "./ProductSearch";
 import s from "../../admin.module.css";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,8 @@ export default async function ProductsPage() {
         </span>
       </div>
 
+      {products.length > 0 && <ProductSearch />}
+
       {products.length === 0 ? (
         <p className={s.empty}>Aucun produit pour le moment.</p>
       ) : (
@@ -50,7 +53,7 @@ export default async function ProductsPage() {
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id}>
+              <tr key={product.id} data-product-name={product.name.toLowerCase()}>
                 <td>{product.images[0] && <img src={product.images[0].url} alt={product.name} />}</td>
                 <td>{product.name}</td>
                 <td>
