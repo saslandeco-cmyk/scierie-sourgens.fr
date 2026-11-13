@@ -91,7 +91,6 @@ export default async function SubcategoryPage({
           <h2 className={`${s.title} ${s.suggestedTitle}`}>Vous pourriez avoir besoin de :</h2>
           <div className={s.grid}>
             {subcategory.suggestedProducts.map((product) => {
-              const statusText = formatStatus(product.priceStatus);
               return (
                 <div key={product.id} className={s.card}>
                   {product.images[0] && (
@@ -104,35 +103,6 @@ export default async function SubcategoryPage({
                   )}
                   <div className={s.cardBody}>
                     <h3>{product.name}</h3>
-                    {(() => {
-                      const dimensionRows = product.dimensions
-                        .map((d) => {
-                          const priceText = formatPrice(d.price, product.priceUnit, d.priceUnitSuffix);
-                          if (!d.dimension && !priceText && !d.description) return null;
-                          return (
-                            <p key={d.id} className={s.dimensionRow}>
-                              <span className={s.dimensionLabel}>
-                                {d.description}
-                                {d.description && d.dimension && " "}
-                                {d.dimension}
-                              </span>
-                              {priceText && <span className={s.priceTag}>{priceText}</span>}
-                            </p>
-                          );
-                        })
-                        .filter(Boolean);
-                      return (
-                        <div className={dimensionRows.length > 6 ? s.dimensionListTwoCol : undefined}>
-                          {dimensionRows}
-                        </div>
-                      );
-                    })()}
-                    {statusText && (
-                      <p>
-                        <span className={s.priceStatus}>{statusText}</span>
-                      </p>
-                    )}
-                    {product.longDescription && <p>{product.longDescription}</p>}
                   </div>
                 </div>
               );
