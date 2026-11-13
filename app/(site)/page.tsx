@@ -27,12 +27,22 @@ const timeline = [
 ];
 
 const products = [
-  { img: "/images/bois-construction.jpg", Icon: PlanksIcon, label: ["Bois de", "construction"] },
-  { img: "/images/terrasses.jpg", Icon: DeckIcon, label: ["Terrasses"] },
-  { img: "/images/bardages.jpg", Icon: CladdingIcon, label: ["Bardages /", "clins"] },
-  { img: "/images/parquets.jpg", Icon: ParquetIcon, label: ["Aménagement", "intérieurs"] },
-  { img: "/images/bois-sur-mesure.jpg", Icon: RingsIcon, label: ["Aménagement", "extérieur"] },
-  { img: "/images/pin-des-landes.jpg", Icon: PineCone, label: ["Entretien du bois ", "et quincaillerie"] },
+  {
+    img: "/images/bois-construction.jpg",
+    Icon: PlanksIcon,
+    label: ["Bois de", "construction"],
+    href: "/catalogue/bois-de-charpente",
+  },
+  { img: "/images/terrasses.jpg", Icon: DeckIcon, label: ["Terrasses"], href: "/catalogue" },
+  { img: "/images/bardages.jpg", Icon: CladdingIcon, label: ["Bardages /", "clins"], href: "/catalogue" },
+  { img: "/images/parquets.jpg", Icon: ParquetIcon, label: ["Aménagement", "intérieurs"], href: "/catalogue" },
+  { img: "/images/bois-sur-mesure.jpg", Icon: RingsIcon, label: ["Aménagement", "extérieur"], href: "/catalogue" },
+  {
+    img: "/images/pin-des-landes.jpg",
+    Icon: PineCone,
+    label: ["Entretien du bois ", "et quincaillerie"],
+    href: "/catalogue",
+  },
 ];
 
 export default function Home() {
@@ -120,12 +130,12 @@ export default function Home() {
           </p>
 
           <ul className={s.products}>
-            {products.map(({ img, Icon, label }) => (
+            {products.map(({ img, Icon, label, href }) => (
               <li key={img} className={s.product}>
                 <div className={s.productImg}>
                   <Image src={img} alt={label.join(" ")} fill sizes="(max-width: 700px) 50vw, 17vw" />
                   <div className={s.productOverlay}>
-                    <Link href="/catalogue" className={s.productOverlayButton}>
+                    <Link href={href} className={s.productOverlayButton}>
                       Voir les produits
                     </Link>
                   </div>
