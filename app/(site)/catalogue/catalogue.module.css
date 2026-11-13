@@ -80,10 +80,14 @@
 }
 
 .cardImage {
+  display: block;
   position: relative;
   width: 100%;
   height: 160px;
   background: #e8e5db;
+  border: 0;
+  padding: 0;
+  font: inherit;
 }
 
 .cardImage img {
@@ -107,6 +111,7 @@
 }
 
 .realisationImage {
+  display: block;
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -114,6 +119,9 @@
   overflow: hidden;
   background: #e8e5db;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 0;
+  padding: 0;
+  font: inherit;
 }
 
 .realisationImage img {
@@ -144,11 +152,15 @@
 }
 
 .productImage {
+  display: block;
   position: relative;
   width: 100%;
   height: 260px;
   flex-shrink: 0;
   background: #e8e5db;
+  border: 0;
+  padding: 0;
+  font: inherit;
 }
 
 .productThumbs {
@@ -255,4 +267,80 @@
 
 .empty {
   color: #666;
+}
+
+.zoomable {
+  cursor: zoom-in;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  padding: 24px;
+}
+
+.lightboxImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: default;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightboxClose:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.lightboxNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.lightboxNav:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.lightboxPrev {
+  left: 16px;
+}
+
+.lightboxNext {
+  right: 16px;
+}
+
+@media (max-width: 600px) {
+  .lightboxNav {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
 }

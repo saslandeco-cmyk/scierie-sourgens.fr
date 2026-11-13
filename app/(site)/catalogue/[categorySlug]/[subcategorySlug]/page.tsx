@@ -1,9 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/lib/catalog";
 import { formatPrice, formatStatus } from "@/lib/priceUnits";
 import ProductGallery from "../../ProductGallery";
+import RealisationsGallery from "../../RealisationsGallery";
+import ZoomableImage from "../../ZoomableImage";
 import s from "../../catalogue.module.css";
 
 export const dynamic = "force-dynamic";
@@ -94,9 +95,12 @@ export default async function SubcategoryPage({
               return (
                 <div key={product.id} className={s.card}>
                   {product.images[0] && (
-                    <div className={s.cardImage}>
-                      <Image src={product.images[0].url} alt={product.name} fill sizes="220px" />
-                    </div>
+                    <ZoomableImage
+                      src={product.images[0].url}
+                      alt={product.name}
+                      sizes="220px"
+                      className={s.cardImage}
+                    />
                   )}
                   <div className={s.cardBody}>
                     <h3>{product.name}</h3>
@@ -140,13 +144,7 @@ export default async function SubcategoryPage({
       {subcategory.realisationImages.length > 0 && (
         <>
           <h2 className={`${s.title} ${s.suggestedTitle}`}>Réalisations clients</h2>
-          <div className={s.realisationsGrid}>
-            {subcategory.realisationImages.map((img) => (
-              <div key={img.id} className={s.realisationImage}>
-                <Image src={img.url} alt="Réalisation client" fill sizes="(max-width: 700px) 50vw, 25vw" />
-              </div>
-            ))}
-          </div>
+          <RealisationsGallery images={subcategory.realisationImages} />
         </>
       )}
     </div>
