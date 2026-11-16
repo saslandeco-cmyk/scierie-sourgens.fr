@@ -9,6 +9,13 @@ import s from "../../catalogue.module.css";
 
 export const dynamic = "force-dynamic";
 
+const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
+  "OSB 3": s.dimensionLabelOsb3,
+  "PLANCHES CLOTURE A EMBOITER CL4 VERT": s.dimensionLabelPlanchesCloture,
+  "PARQUET À CLOUER XXL PIN DES LANDES": s.dimensionLabelParquetXxl,
+  "POTEAUX ET GANIVELLE CHÂTAIGNIER SCIÉE, DOUBLE TORSION, CLOTURE GIRONDINE": s.dimensionLabelGanivelle,
+};
+
 export default async function SubcategoryPage({
   params,
 }: {
@@ -50,15 +57,9 @@ export default async function SubcategoryPage({
                         return (
                           <p key={d.id} className={s.dimensionRow}>
                             <span
-                              className={
-                                product.name === "OSB 3"
-                                  ? `${s.dimensionLabel} ${s.dimensionLabelOsb3}`
-                                  : product.name === "PLANCHES CLOTURE A EMBOITER CL4 VERT"
-                                    ? `${s.dimensionLabel} ${s.dimensionLabelPlanchesCloture}`
-                                    : product.name === "PARQUET À CLOUER XXL PIN DES LANDES"
-                                      ? `${s.dimensionLabel} ${s.dimensionLabelParquetXxl}`
-                                      : s.dimensionLabel
-                              }
+                              className={[s.dimensionLabel, DIMENSION_LABEL_EXTRA_CLASS[product.name]]
+                                .filter(Boolean)
+                                .join(" ")}
                             >
                               {d.description}
                               {d.description && d.dimension && " "}
