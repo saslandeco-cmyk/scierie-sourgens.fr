@@ -35,76 +35,82 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
   const existingImages = defaults?.images ?? [];
 
   return (
-    <form className={s.form} action={formAction}>
-      <label>
-        Nom
-        <input type="text" name="name" defaultValue={defaults?.name ?? ""} required />
-      </label>
-      <label>
-        Description longue (facultative)
-        <RichTextEditor name="longDescription" defaultValue={defaults?.longDescription} rows={6} />
-      </label>
-      <DimensionsField defaults={defaults?.dimensions} />
-      <label>
-        Unité de prix
-        <select name="priceUnit" defaultValue={defaults?.priceUnit ?? ""}>
-          <option value="">— Choisir —</option>
-          {UNIT_OPTIONS.map((unit) => (
-            <option key={unit} value={unit}>
-              {unit}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        Statut (optionnel)
-        <select name="priceStatus" defaultValue={defaults?.priceStatus ?? ""}>
-          <option value="">— Aucun —</option>
-          {STATUS_OPTIONS.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <fieldset className={s.checkboxList}>
-        <legend>Catégories / sous-catégories</legend>
-        {categories.map((c) => (
-          <label key={c.id} className={s.checkboxItem}>
-            <input
-              type="checkbox"
-              name="categoryIds"
-              value={c.id}
-              defaultChecked={selectedCategoryIds.includes(c.id)}
-            />
-            {c.label}
+    <form className={`${s.form} ${s.productForm}`} action={formAction}>
+      <div className={s.formColumns}>
+        <div className={s.formColumn}>
+          <label>
+            Nom
+            <input type="text" name="name" defaultValue={defaults?.name ?? ""} required />
           </label>
-        ))}
-      </fieldset>
+          <label>
+            Description longue (facultative)
+            <RichTextEditor name="longDescription" defaultValue={defaults?.longDescription} rows={6} />
+          </label>
+          <DimensionsField defaults={defaults?.dimensions} />
+          <label>
+            Unité de prix
+            <select name="priceUnit" defaultValue={defaults?.priceUnit ?? ""}>
+              <option value="">— Choisir —</option>
+              {UNIT_OPTIONS.map((unit) => (
+                <option key={unit} value={unit}>
+                  {unit}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Statut (optionnel)
+            <select name="priceStatus" defaultValue={defaults?.priceStatus ?? ""}>
+              <option value="">— Aucun —</option>
+              {STATUS_OPTIONS.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-      <label>
-        Position
-        <input type="number" name="position" defaultValue={defaults?.position ?? 0} />
-      </label>
-
-      {existingImages.length > 0 && (
-        <fieldset className={s.checkboxList}>
-          <legend>Photos actuelles (cocher pour supprimer)</legend>
-          <div className={s.imageGrid}>
-            {existingImages.map((img) => (
-              <label key={img.id} className={s.imageThumb}>
-                <img src={img.url} alt="" />
-                <span className={s.imageRemove}>
-                  <input type="checkbox" name="removeImageIds" value={img.id} /> Supprimer
-                </span>
+        <div className={s.formColumn}>
+          <fieldset className={s.checkboxList}>
+            <legend>Catégories / sous-catégories</legend>
+            {categories.map((c) => (
+              <label key={c.id} className={s.checkboxItem}>
+                <input
+                  type="checkbox"
+                  name="categoryIds"
+                  value={c.id}
+                  defaultChecked={selectedCategoryIds.includes(c.id)}
+                />
+                {c.label}
               </label>
             ))}
-          </div>
-        </fieldset>
-      )}
+          </fieldset>
 
-      <ImagePicker name="images" label={existingImages.length > 0 ? "Ajouter des photos" : "Photos"} />
+          <label>
+            Position
+            <input type="number" name="position" defaultValue={defaults?.position ?? 0} />
+          </label>
+
+          {existingImages.length > 0 && (
+            <fieldset className={s.checkboxList}>
+              <legend>Photos actuelles (cocher pour supprimer)</legend>
+              <div className={s.imageGrid}>
+                {existingImages.map((img) => (
+                  <label key={img.id} className={s.imageThumb}>
+                    <img src={img.url} alt="" />
+                    <span className={s.imageRemove}>
+                      <input type="checkbox" name="removeImageIds" value={img.id} /> Supprimer
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          )}
+
+          <ImagePicker name="images" label={existingImages.length > 0 ? "Ajouter des photos" : "Photos"} />
+        </div>
+      </div>
 
       {state.error && <p className={s.formError}>{state.error}</p>}
       <div className={s.formActions}>

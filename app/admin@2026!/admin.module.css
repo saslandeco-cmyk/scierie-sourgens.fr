@@ -276,6 +276,30 @@
   max-width: 480px;
 }
 
+.productForm {
+  max-width: 920px;
+}
+
+.formColumns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .formColumns {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form label {
   display: flex;
   flex-direction: column;
