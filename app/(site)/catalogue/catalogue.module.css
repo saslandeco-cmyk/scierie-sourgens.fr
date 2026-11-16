@@ -63,6 +63,32 @@
   line-height: 1.6;
 }
 
+.description ul,
+.description ol,
+.longDescription ul,
+.longDescription ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.description h3,
+.longDescription h3 {
+  margin: 16px 0 6px;
+  color: #2e3022;
+}
+
+.description a,
+.longDescription a {
+  color: #cb7246;
+}
+
+.longDescription {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

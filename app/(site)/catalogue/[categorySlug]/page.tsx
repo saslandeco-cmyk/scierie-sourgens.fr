@@ -27,7 +27,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       )}
 
       <h1 className={s.title}>{category.name}</h1>
-      {category.description && <p className={s.description}>{category.description}</p>}
+      {category.description && (
+        <div className={s.description} dangerouslySetInnerHTML={{ __html: category.description }} />
+      )}
 
       {category.children.length === 0 ? (
         <p className={s.empty}>Aucune sous-catégorie pour le moment.</p>

@@ -40,7 +40,9 @@ export default async function SubcategoryPage({
       </p>
 
       <h1 className={s.title}>{subcategory.name}</h1>
-      {subcategory.description && <p className={s.description}>{subcategory.description}</p>}
+      {subcategory.description && (
+        <div className={s.description} dangerouslySetInnerHTML={{ __html: subcategory.description }} />
+      )}
 
       {subcategory.products.length === 0 ? (
         <p className={s.empty}>Aucun produit pour le moment.</p>
@@ -91,7 +93,9 @@ export default async function SubcategoryPage({
                       <span className={s.priceStatus}>{statusText}</span>
                     </p>
                   )}
-                  {product.longDescription && <p>{product.longDescription}</p>}
+                  {product.longDescription && (
+                    <div className={s.longDescription} dangerouslySetInnerHTML={{ __html: product.longDescription }} />
+                  )}
                 </div>
               </div>
             );

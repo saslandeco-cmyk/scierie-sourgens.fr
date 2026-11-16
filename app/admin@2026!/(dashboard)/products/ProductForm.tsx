@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import type { ProductFormState } from "./actions";
 import ImagePicker from "./ImagePicker";
 import DimensionsField, { type DimensionDefault } from "./DimensionsField";
+import RichTextEditor from "../RichTextEditor";
 import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
 import s from "../../admin.module.css";
 
@@ -41,7 +42,7 @@ export default function ProductForm({ action, categories, defaults, submitLabel 
       </label>
       <label>
         Description longue (facultative)
-        <textarea name="longDescription" rows={6} defaultValue={defaults?.longDescription ?? ""} />
+        <RichTextEditor name="longDescription" defaultValue={defaults?.longDescription} rows={6} />
       </label>
       <DimensionsField defaults={defaults?.dimensions} />
       <label>

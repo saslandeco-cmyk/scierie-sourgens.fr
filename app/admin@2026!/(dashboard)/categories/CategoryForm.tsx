@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { CategoryFormState } from "./actions";
 import ImagePicker from "../products/ImagePicker";
+import RichTextEditor from "../RichTextEditor";
 import s from "../../admin.module.css";
 
 type RootCategory = { id: string; name: string };
@@ -47,7 +48,7 @@ export default function CategoryForm({
       </label>
       <label>
         Description
-        <textarea name="description" rows={4} defaultValue={defaults?.description ?? ""} />
+        <RichTextEditor name="description" defaultValue={defaults?.description} rows={4} />
       </label>
       <label>
         Catégorie parente (laisser vide pour une catégorie racine)

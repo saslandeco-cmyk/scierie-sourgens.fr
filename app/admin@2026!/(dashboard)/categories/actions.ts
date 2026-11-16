@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { slugify, uniqueSlug } from "@/lib/slug";
 import { deleteImage, uploadImage } from "@/lib/blob";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
+import { sanitizeRichText } from "@/lib/sanitizeHtml";
 
 const CATEGORIES_PATH = `${ADMIN_BASE_PATH}/categories`;
 
@@ -74,7 +75,7 @@ export async function createCategory(
     await prisma.category.create({
       data: {
         name: parsed.data.name,
-        description: parsed.data.description ?? null,
+        description: sanitizeRichText(parsed.data.description),
         slug,
         position: parsed.data.position,
         parentId,
@@ -160,7 +161,7 @@ export async function updateCategory(
       where: { id },
       data: {
         name: parsed.data.name,
-        description: parsed.data.description ?? null,
+        description: sanitizeRichText(parsed.data.description),
         slug,
         position: parsed.data.position,
         parentId,

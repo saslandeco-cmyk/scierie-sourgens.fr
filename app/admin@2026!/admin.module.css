@@ -293,6 +293,59 @@
   font-family: inherit;
 }
 
+.richText {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.richTextToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px;
+  background: #f3f3f0;
+  border-bottom: 1px solid #ccc;
+}
+
+.richTextButton {
+  min-width: 28px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.richTextButton:hover {
+  background: #e8e5db;
+}
+
+.richTextEditable {
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.5;
+  outline: none;
+}
+
+.richTextEditable ul,
+.richTextEditable ol {
+  margin: 6px 0;
+  padding-left: 22px;
+}
+
+.richTextEditable h3 {
+  margin: 8px 0 4px;
+  font-size: 16px;
+}
+
+.richTextEditable p {
+  margin: 0 0 6px;
+}
+
 .checkboxList {
   border: 1px solid #ccc;
   border-radius: 4px;

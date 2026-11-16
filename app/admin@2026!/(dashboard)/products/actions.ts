@@ -8,6 +8,7 @@ import { uniqueSlug } from "@/lib/slug";
 import { deleteImage, uploadImage } from "@/lib/blob";
 import { ADMIN_BASE_PATH } from "@/lib/auth";
 import { UNIT_OPTIONS, STATUS_OPTIONS } from "@/lib/priceUnits";
+import { sanitizeRichText } from "@/lib/sanitizeHtml";
 
 const PRODUCTS_PATH = `${ADMIN_BASE_PATH}/products`;
 
@@ -104,7 +105,7 @@ export async function createProduct(
       data: {
         name: parsed.data.name,
         slug,
-        longDescription: parsed.data.longDescription ?? null,
+        longDescription: sanitizeRichText(parsed.data.longDescription),
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
@@ -168,7 +169,7 @@ export async function updateProduct(
       data: {
         name: parsed.data.name,
         slug,
-        longDescription: parsed.data.longDescription ?? null,
+        longDescription: sanitizeRichText(parsed.data.longDescription),
         priceUnit: parsed.data.priceUnit || null,
         priceStatus: parsed.data.priceStatus || null,
         position: parsed.data.position,
