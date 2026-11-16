@@ -16,6 +16,10 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "POTEAUX ET GANIVELLE CHÂTAIGNIER SCIÉE, DOUBLE TORSION, CLOTURE GIRONDINE": s.dimensionLabelGanivelle,
 };
 
+const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
+  "POTEAUX ET GANIVELLE CHÂTAIGNIER SCIÉE, DOUBLE TORSION, CLOTURE GIRONDINE",
+]);
+
 export default async function SubcategoryPage({
   params,
 }: {
@@ -71,7 +75,13 @@ export default async function SubcategoryPage({
                       })
                       .filter(Boolean);
                     return (
-                      <div className={dimensionRows.length > 6 ? s.dimensionListTwoCol : undefined}>
+                      <div
+                        className={
+                          dimensionRows.length > 6 && !SINGLE_COLUMN_DIMENSION_PRODUCTS.has(product.name)
+                            ? s.dimensionListTwoCol
+                            : undefined
+                        }
+                      >
                         {dimensionRows}
                       </div>
                     );
