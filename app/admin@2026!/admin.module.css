@@ -323,6 +323,16 @@
   background: #e8e5db;
 }
 
+.richTextButtonActive {
+  background: #2e3022;
+  border-color: #2e3022;
+  color: #fff;
+}
+
+.richTextButtonActive:hover {
+  background: #2e3022;
+}
+
 .richTextEditable {
   padding: 10px 12px;
   font-size: 14px;

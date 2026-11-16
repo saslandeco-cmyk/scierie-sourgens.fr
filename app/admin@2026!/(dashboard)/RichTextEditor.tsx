@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef } from "react";
+import { EditorContent, useEditor, type Editor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import s from "../admin.module.css";
 
 type Props = {
@@ -9,96 +11,122 @@ type Props = {
   rows?: number;
 };
 
-const BUTTONS: { label: string; command: string; value?: string; title: string }[] = [
-  { label: "G", command: "bold", title: "Gras" },
-  { label: "I", command: "italic", title: "Italique" },
-  { label: "S", command: "underline", title: "Souligné" },
-  { label: "H3", command: "formatBlock", value: "H3", title: "Titre" },
-  { label: "¶", command: "formatBlock", value: "P", title: "Paragraphe" },
-  { label: "•", command: "insertUnorderedList", title: "Liste à puces" },
-  { label: "1.", command: "insertOrderedList", title: "Liste numérotée" },
-];
+function ToolbarButton({
+  editor,
+  title,
+  isActive,
+  onClick,
+  children,
+}: {
+  editor: Editor;
+  title: string;
+  isActive?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      className={`${s.richTextButton} ${isActive ? s.richTextButtonActive : ""}`}
+      title={title}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        onClick();
+      }}
+      disabled={!editor.isEditable}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function RichTextEditor({ name, defaultValue, rows = 6 }: Props) {
-  const editableRef = useRef<HTMLDivElement>(null);
   const hiddenRef = useRef<HTMLInputElement>(null);
 
-  function sync() {
-    if (editableRef.current && hiddenRef.current) {
-      hiddenRef.current.value = editableRef.current.innerHTML;
-    }
-  }
+  const editor = useEditor({
+    immediatelyRender: false,
+    extensions: [
+      StarterKit.configure({
+        heading: { levels: [3] },
+        link: { openOnClick: false, autolink: false, HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" } },
+      }),
+    ],
+    content: defaultValue ?? "",
+    editorProps: {
+      attributes: {
+        class: s.richTextEditable,
+        style: `min-height:${rows * 1.4}em`,
+      },
+    },
+    onUpdate: ({ editor }) => {
+      if (hiddenRef.current) hiddenRef.current.value = editor.getHTML();
+    },
+  });
 
-  function runCommand(command: string, value?: string) {
-    editableRef.current?.focus();
-    document.execCommand(command, false, value);
-    sync();
-  }
-
-  function addLink() {
-    editableRef.current?.focus();
-    const url = window.prompt("URL du lien :", "https://");
-    if (url) document.execCommand("createLink", false, url);
-    sync();
-  }
-
-  function removeLink() {
-    editableRef.current?.focus();
-    document.execCommand("unlink");
-    sync();
+  if (!editor) {
+    return (
+      <div className={s.richText}>
+        <input type="hidden" name={name} defaultValue={defaultValue ?? ""} />
+      </div>
+    );
   }
 
   return (
     <div className={s.richText}>
       <div className={s.richTextToolbar}>
-        {BUTTONS.map((btn) => (
-          <button
-            key={btn.title}
-            type="button"
-            className={s.richTextButton}
-            title={btn.title}
-            onMouseDown={(e) => {
-              e.preventDefault();
-              runCommand(btn.command, btn.value);
-            }}
-          >
-            {btn.label}
-          </button>
-        ))}
-        <button
-          type="button"
-          className={s.richTextButton}
+        <ToolbarButton editor={editor} title="Gras" isActive={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}>
+          G
+        </ToolbarButton>
+        <ToolbarButton editor={editor} title="Italique" isActive={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}>
+          I
+        </ToolbarButton>
+        <ToolbarButton editor={editor} title="Souligné" isActive={editor.isActive("underline")} onClick={() => editor.chain().focus().toggleUnderline().run()}>
+          S
+        </ToolbarButton>
+        <ToolbarButton
+          editor={editor}
+          title="Titre"
+          isActive={editor.isActive("heading", { level: 3 })}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        >
+          H3
+        </ToolbarButton>
+        <ToolbarButton editor={editor} title="Paragraphe" isActive={editor.isActive("paragraph")} onClick={() => editor.chain().focus().setParagraph().run()}>
+          ¶
+        </ToolbarButton>
+        <ToolbarButton
+          editor={editor}
+          title="Liste à puces"
+          isActive={editor.isActive("bulletList")}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+        >
+          •
+        </ToolbarButton>
+        <ToolbarButton
+          editor={editor}
+          title="Liste numérotée"
+          isActive={editor.isActive("orderedList")}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        >
+          1.
+        </ToolbarButton>
+        <ToolbarButton
+          editor={editor}
           title="Insérer un lien"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            addLink();
+          isActive={editor.isActive("link")}
+          onClick={() => {
+            const url = window.prompt("URL du lien :", "https://");
+            if (url) editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
           }}
         >
           🔗
-        </button>
-        <button
-          type="button"
-          className={s.richTextButton}
-          title="Retirer le lien"
-          onMouseDown={(e) => {
-            e.preventDefault();
-            removeLink();
-          }}
-        >
+        </ToolbarButton>
+        <ToolbarButton editor={editor} title="Retirer le lien" onClick={() => editor.chain().focus().unsetLink().run()}>
           🔗⌫
-        </button>
+        </ToolbarButton>
       </div>
 
-      <div
-        ref={editableRef}
-        className={s.richTextEditable}
-        style={{ minHeight: `${rows * 1.4}em` }}
-        contentEditable
-        suppressContentEditableWarning
-        onInput={sync}
-        onBlur={sync}
-        dangerouslySetInnerHTML={{ __html: defaultValue ?? "" }}
-      />
+      <EditorContent editor={editor} />
 
       <input ref={hiddenRef} type="hidden" name={name} defaultValue={defaultValue ?? ""} />
     </div>
