@@ -113,6 +113,10 @@
   padding: 32px 24px;
 }
 
+.shellMain:has(.productForm) {
+  max-width: 95vw;
+}
+
 /* =========================================================
    COMMON ADMIN UI
    ========================================================= */
@@ -277,7 +281,7 @@
 }
 
 .productForm {
-  max-width: 920px;
+  max-width: 100%;
 }
 
 .formColumns {
