@@ -447,6 +447,58 @@
   cursor: grabbing;
 }
 
+.blockRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.blockRowDragging {
+  opacity: 0.4;
+}
+
+.blockRowDragOver {
+  border-color: #2e3022;
+  border-style: dashed;
+}
+
+.blockRowHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.blockTypeBadge {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #555;
+}
+
+.blockRowHeader button {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.blockPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .dimensionRowTop {
   display: flex;
   gap: 8px;

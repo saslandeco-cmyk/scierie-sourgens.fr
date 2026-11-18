@@ -9,6 +9,7 @@ type Props = {
   name: string;
   defaultValue?: string | null;
   rows?: number;
+  onChange?: (html: string) => void;
 };
 
 function ToolbarButton({
@@ -40,7 +41,7 @@ function ToolbarButton({
   );
 }
 
-export default function RichTextEditor({ name, defaultValue, rows = 6 }: Props) {
+export default function RichTextEditor({ name, defaultValue, rows = 6, onChange }: Props) {
   const hiddenRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
@@ -59,7 +60,9 @@ export default function RichTextEditor({ name, defaultValue, rows = 6 }: Props) 
       },
     },
     onUpdate: ({ editor }) => {
-      if (hiddenRef.current) hiddenRef.current.value = editor.getHTML();
+      const html = editor.getHTML();
+      if (hiddenRef.current) hiddenRef.current.value = html;
+      onChange?.(html);
     },
   });
 

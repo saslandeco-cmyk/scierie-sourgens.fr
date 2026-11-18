@@ -6,10 +6,11 @@ import s from "../admin.module.css";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHomePage() {
-  const [categoryCount, subcategoryCount, productCount] = await Promise.all([
+  const [categoryCount, subcategoryCount, productCount, pageCount] = await Promise.all([
     prisma.category.count({ where: { parentId: null } }),
     prisma.category.count({ where: { parentId: { not: null } } }),
     prisma.product.count(),
+    prisma.page.count(),
   ]);
 
   return (
@@ -18,7 +19,10 @@ export default async function AdminHomePage() {
         <h1>Tableau de bord</h1>
       </div>
       <div className={s.card}>
-        <p>{categoryCount} catégorie(s), {subcategoryCount} sous-catégorie(s), {productCount} produit(s).</p>
+        <p>
+          {categoryCount} catégorie(s), {subcategoryCount} sous-catégorie(s), {productCount} produit(s),{" "}
+          {pageCount} page(s).
+        </p>
       </div>
       <div className={s.formActions}>
         <Link href={`${ADMIN_BASE_PATH}/categories`} className={s.button}>
@@ -26,6 +30,9 @@ export default async function AdminHomePage() {
         </Link>
         <Link href={`${ADMIN_BASE_PATH}/products`} className={s.button}>
           Gérer les produits
+        </Link>
+        <Link href={`${ADMIN_BASE_PATH}/pages`} className={s.button}>
+          Gérer les pages
         </Link>
       </div>
     </div>

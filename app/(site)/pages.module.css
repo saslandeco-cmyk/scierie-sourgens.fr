@@ -1,0 +1,97 @@
+.wrap {
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 128px 24px 80px;
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    padding-top: 108px;
+  }
+}
+
+.title {
+  font-size: 32px;
+  margin: 0 0 32px;
+  color: #2e3022;
+}
+
+.richTextBlock {
+  margin: 0 0 24px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.richTextBlock ul,
+.richTextBlock ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.richTextBlock h3 {
+  margin: 16px 0 6px;
+  color: #2e3022;
+}
+
+.richTextBlock a {
+  color: #cb7246;
+}
+
+.imageBlock {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0 0 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  font: inherit;
+}
+
+.imageBlock img {
+  object-fit: cover;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  margin: 0 0 24px;
+}
+
+.galleryImage {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e8e5db;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: zoom-in;
+}
+
+.galleryImage img {
+  object-fit: cover;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 4px;
+  background: #2e3022;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 0 24px;
+}
+
+.ctaButtonSecondary {
+  background: #ddd8cc;
+  color: #1d1f17;
+}

@@ -11,6 +11,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <Link href={ADMIN_BASE_PATH}>Tableau de bord</Link>
           <Link href={`${ADMIN_BASE_PATH}/categories`}>Catégories</Link>
           <Link href={`${ADMIN_BASE_PATH}/products`}>Produits</Link>
+          <Link href={`${ADMIN_BASE_PATH}/pages`}>Pages</Link>
         </nav>
         <form action={logout}>
           <button type="submit" className={s.logoutButton}>
