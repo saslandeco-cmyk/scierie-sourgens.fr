@@ -422,6 +422,29 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 10px;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.dimensionRowDragging {
+  opacity: 0.4;
+}
+
+.dimensionRowDragOver {
+  border-color: #2e3022;
+  border-style: dashed;
+}
+
+.dimensionDragHandle {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  color: #888;
+  cursor: grab;
+  user-select: none;
+}
+
+.dimensionDragHandle:active {
+  cursor: grabbing;
 }
 
 .dimensionRowTop {
