@@ -310,6 +310,10 @@
   flex: 0 0 310px;
 }
 
+.dimensionLabelGrillage {
+  flex: 0 0 400px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;
