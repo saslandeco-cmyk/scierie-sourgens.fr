@@ -318,6 +318,10 @@
   flex: 0 0 300px;
 }
 
+.dimensionLabelToleRustica {
+  flex: 0 0 350px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;
