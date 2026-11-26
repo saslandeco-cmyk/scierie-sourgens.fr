@@ -24,6 +24,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "FAUX CLAIRE VOIE PIN DES LANDES RABOTÉ": s.dimensionLabelFauxClaireVoie,
   "CLINS BIAISEES PIN DES LANDES RABOTÉ (15 unités au ml)": s.dimensionLabelClinsBiaisees,
   "BARDAGE PIN DES LANDES AVEC COUVRE JOINT INTÉGRÉ RABOTÉ": s.dimensionLabelBardageCouvreJointIntegre,
+  "BARDAGE DOUGLAS CL3 INCOLORE BOIS NATUREL": s.dimensionLabelBardageDouglas,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
