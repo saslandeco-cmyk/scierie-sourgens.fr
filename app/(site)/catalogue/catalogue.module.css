@@ -306,6 +306,10 @@
   flex: 0 0 350px;
 }
 
+.dimensionLabelRondins {
+  flex: 0 0 310px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;

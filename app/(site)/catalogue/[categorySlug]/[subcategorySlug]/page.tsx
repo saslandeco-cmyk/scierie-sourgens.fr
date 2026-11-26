@@ -14,6 +14,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "PLANCHES CLOTURE A EMBOITER CL4 VERT": s.dimensionLabelPlanchesCloture,
   "PARQUET À CLOUER XXL PIN DES LANDES": s.dimensionLabelParquetXxl,
   "POTEAUX ET GANIVELLE CHÂTAIGNIER SCIÉE, DOUBLE TORSION, CLOTURE GIRONDINE": s.dimensionLabelGanivelle,
+  "RONDINS ET DEMIS RONDINS AUTOCLAVE VERT": s.dimensionLabelRondins,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
