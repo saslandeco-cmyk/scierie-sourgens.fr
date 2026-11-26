@@ -19,6 +19,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "Poteaux en châtaignier épointés": s.dimensionLabelPoteauxChataignier,
   "TÔLE RUSTICA FLORENCE ANTHIQUE": s.dimensionLabelToleRustica,
   "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE MARRON": s.dimensionLabelBardagePinMarron,
+  "CLINS DE BARDAGE PIN DES LANDES": s.dimensionLabelClinsBardage,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
