@@ -354,6 +354,10 @@
   flex: 0 0 250px;
 }
 
+.dimensionLabelClinsFauxClaireVoieDouglas {
+  flex: 0 0 300px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;

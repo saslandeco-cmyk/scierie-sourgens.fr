@@ -30,7 +30,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "BARDAGE PIN DES LANDES AVEC COUVRE JOINT INTÉGRÉ RABOTÉ": s.dimensionLabelBardageCouvreJointIntegre,
   "BARDAGE DOUGLAS CL3 INCOLORE BOIS NATUREL": s.dimensionLabelBardageDouglas,
   "CLINS DE BARDAGE A EMBOITER DOUGLAS": s.dimensionLabelClinsDouglas,
-  "CLINS DE BARDAGE FAUX CLAIRE VOIE DOUGLAS": s.dimensionLabelClinsDouglas,
+  "CLINS DE BARDAGE FAUX CLAIRE VOIE DOUGLAS": s.dimensionLabelClinsFauxClaireVoieDouglas,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
