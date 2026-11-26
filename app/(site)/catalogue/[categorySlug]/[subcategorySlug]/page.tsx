@@ -40,6 +40,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "OSSATURES PIN DES LANDES POUR TERRASSES MAISONS BOIS LISSES BASSES ETC….": s.dimensionLabelOssatures,
   "LISSES RABOTÉES CL4": s.dimensionLabelLissesSapin,
   "SAPIN CONTRE-COLLE": s.dimensionLabelLissesSapin,
+  "LITEAU PIN DES LANDES": s.dimensionLabelLiteau,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
