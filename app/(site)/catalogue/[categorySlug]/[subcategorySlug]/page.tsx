@@ -31,6 +31,12 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "BARDAGE DOUGLAS CL3 INCOLORE BOIS NATUREL": s.dimensionLabelBardageDouglas,
   "CLINS DE BARDAGE A EMBOITER DOUGLAS": s.dimensionLabelClinsDouglas,
   "CLINS DE BARDAGE FAUX CLAIRE VOIE DOUGLAS": s.dimensionLabelClinsFauxClaireVoieDouglas,
+  "PIN DES LANDES QUALITÉ ECO 1ER PRIX": s.dimensionLabelLamesTerrasse,
+  "PIN DES LANDES QUALITÉ SUPÉRIEURE LISSES": s.dimensionLabelLamesTerrasse,
+  "LAMES DE TERRASSE OCEAN PIN": s.dimensionLabelLamesTerrasse,
+  "LAMES PIN SYLVESTRE - QUALITÉ SUPÉRIEURE CHOIX US": s.dimensionLabelLamesTerrasse,
+  "LAME DE TERRASSE PIN DES LANDES BIAISÉE DOUBLE STRIES": s.dimensionLabelLamesTerrasse,
+  "LAME DE TERRASSE BOIS EXOTIQUE MUIRACATIARA / CUMARU": s.dimensionLabelLamesTerrasse,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
