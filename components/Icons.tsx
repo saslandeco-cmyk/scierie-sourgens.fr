@@ -188,6 +188,15 @@ export function PhoneIcon({ className }: IconProps) {
   );
 }
 
+export function MailIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} {...base} strokeWidth={3}>
+      <rect x="6" y="11" width="36" height="26" rx="3" />
+      <path d="M8 14 24 27 40 14" />
+    </svg>
+  );
+}
+
 export function ClockIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 48 48" className={className} {...base} strokeWidth={3}>
