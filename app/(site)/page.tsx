@@ -214,9 +214,9 @@ export default function Home() {
             <div className={s.ctaLeft}>
               <h2 className={s.ctaScript}>Un projet en bois&nbsp;?</h2>
               <p className={s.ctaTitle}>Parlons-en.</p>
-              <a href="mailto:contact@scierie-sourgens.fr" className={s.ctaButton}>
+              <Link href="/contact" className={s.ctaButton}>
                 Nous contacter <ArrowRight className={s.ctaArrow} />
-              </a>
+              </Link>
             </div>
 
             <div className={s.ctaRight}>

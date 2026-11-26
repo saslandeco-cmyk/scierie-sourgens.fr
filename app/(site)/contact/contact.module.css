@@ -1,0 +1,120 @@
+.wrap {
+  width: 90%;
+  max-width: 680px;
+  margin: 0 auto;
+  /* top padding clears the fixed-height overlay header, same value used by
+     the catalogue pages */
+  padding: 128px 24px 80px;
+}
+
+@media (max-width: 600px) {
+  .wrap {
+    padding-top: 108px;
+  }
+}
+
+.title {
+  font-family: var(--font-title);
+  font-size: 32px;
+  margin: 0 0 12px;
+  color: var(--green-900);
+}
+
+.intro {
+  margin: 0 0 32px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--green-900);
+}
+
+.form input,
+.form select,
+.form textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.form textarea {
+  resize: vertical;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.checkboxLabel {
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 10px !important;
+  font-size: 13px;
+  font-weight: 400;
+  color: #555;
+  line-height: 1.5;
+}
+
+.checkboxLabel input {
+  margin-top: 3px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.error {
+  margin: 0;
+  color: #b42318;
+  font-size: 14px;
+}
+
+.success {
+  margin: 0;
+  color: var(--green-800);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.submit {
+  align-self: flex-start;
+  padding: 12px 28px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--green-900);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--green-800);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

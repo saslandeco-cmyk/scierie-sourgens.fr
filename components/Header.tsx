@@ -20,7 +20,7 @@ const links = [
   { href: "/#accueil", label: "Accueil" },
   { href: "/#histoire", label: "Notre histoire" },
   { href: "/catalogue", label: "Catalogue" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/contact", label: "Contact" },
 ];
 
 type NavSubcategory = { id: string; name: string; slug: string };
@@ -54,7 +54,7 @@ export default function Header({ categories = [] }: { categories?: NavCategory[]
   };
 
   const isActive = (href: string) => {
-    if (href === "/catalogue") return pathname.startsWith("/catalogue");
+    if (href === "/catalogue" || href === "/contact") return pathname.startsWith(href);
     return onHome && active === href;
   };
 
