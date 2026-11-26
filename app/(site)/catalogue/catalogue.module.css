@@ -366,6 +366,10 @@
   flex: 0 0 150px;
 }
 
+.dimensionLabelLissesSapin {
+  flex: 0 0 180px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;

@@ -38,6 +38,8 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "LAME DE TERRASSE PIN DES LANDES BIAISÉE DOUBLE STRIES": s.dimensionLabelLamesTerrasse,
   "LAME DE TERRASSE BOIS EXOTIQUE MUIRACATIARA / CUMARU": s.dimensionLabelLamesTerrasse,
   "OSSATURES PIN DES LANDES POUR TERRASSES MAISONS BOIS LISSES BASSES ETC….": s.dimensionLabelOssatures,
+  "LISSES RABOTÉES CL4": s.dimensionLabelLissesSapin,
+  "SAPIN CONTRE-COLLE": s.dimensionLabelLissesSapin,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
