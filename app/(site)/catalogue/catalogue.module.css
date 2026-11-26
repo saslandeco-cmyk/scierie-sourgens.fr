@@ -314,6 +314,10 @@
   flex: 0 0 400px;
 }
 
+.dimensionLabelPoteauxChataignier {
+  flex: 0 0 300px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;
