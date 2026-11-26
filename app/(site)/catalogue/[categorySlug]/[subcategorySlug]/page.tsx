@@ -18,6 +18,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "ROULEAU DE GRILLAGE 50ML": s.dimensionLabelGrillage,
   "Poteaux en châtaignier épointés": s.dimensionLabelPoteauxChataignier,
   "TÔLE RUSTICA FLORENCE ANTHIQUE": s.dimensionLabelToleRustica,
+  "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE MARRON": s.dimensionLabelBardagePinMarron,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
