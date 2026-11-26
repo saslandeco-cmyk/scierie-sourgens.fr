@@ -22,6 +22,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "CLINS DE BARDAGE PIN DES LANDES": s.dimensionLabelClinsBardage,
   "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE VERT": s.dimensionLabelBardagePinVert,
   "FAUX CLAIRE VOIE PIN DES LANDES RABOTÉ": s.dimensionLabelFauxClaireVoie,
+  "CLINS BIAISEES PIN DES LANDES RABOTÉ (15 unités au ml)": s.dimensionLabelClinsBiaisees,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
