@@ -374,6 +374,10 @@
   flex: 0 0 200px;
 }
 
+.dimensionLabelBoisNonDelignees {
+  flex: 0 0 180px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;

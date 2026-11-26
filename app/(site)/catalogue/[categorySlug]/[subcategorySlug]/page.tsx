@@ -41,6 +41,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "LISSES RABOTÉES CL4": s.dimensionLabelLissesSapin,
   "SAPIN CONTRE-COLLE": s.dimensionLabelLissesSapin,
   "LITEAU PIN DES LANDES": s.dimensionLabelLiteau,
+  "BOIS NON DELIGNEES CL2 POUR PLATEAU BAR ETABLI": s.dimensionLabelBoisNonDelignees,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
