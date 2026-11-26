@@ -36,25 +36,27 @@ export default function ContactForm() {
         <input type="text" name="company" />
       </label>
 
-      <label>
-        Adresse email
-        <input type="email" name="email" required />
-      </label>
+      <div className={s.row}>
+        <label>
+          Adresse email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Numéro de téléphone
+          <input type="tel" name="phone" required />
+        </label>
+      </div>
 
-      <label>
-        Adresse postale
-        <input type="text" name="address" required />
-      </label>
-
-      <label>
-        Code postal et ville
-        <input type="text" name="postalCity" required />
-      </label>
-
-      <label>
-        Numéro de téléphone
-        <input type="tel" name="phone" required />
-      </label>
+      <div className={s.row}>
+        <label>
+          Adresse postale
+          <input type="text" name="address" required />
+        </label>
+        <label>
+          Code postal et ville
+          <input type="text" name="postalCity" required />
+        </label>
+      </div>
 
       <label>
         Vous êtes intéressé par
