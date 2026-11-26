@@ -20,6 +20,7 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "TÔLE RUSTICA FLORENCE ANTHIQUE": s.dimensionLabelToleRustica,
   "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE MARRON": s.dimensionLabelBardagePinMarron,
   "CLINS DE BARDAGE PIN DES LANDES": s.dimensionLabelClinsBardage,
+  "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE VERT": s.dimensionLabelBardagePinVert,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([

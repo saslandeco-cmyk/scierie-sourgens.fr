@@ -330,6 +330,10 @@
   flex: 0 0 250px;
 }
 
+.dimensionLabelBardagePinVert {
+  flex: 0 0 250px;
+}
+
 .priceTag {
   color: #2e3022;
   font-weight: 700;
