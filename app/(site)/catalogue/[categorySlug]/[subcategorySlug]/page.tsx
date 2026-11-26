@@ -9,6 +9,10 @@ import s from "../../catalogue.module.css";
 
 export const dynamic = "force-dynamic";
 
+function normalizeProductName(name: string): string {
+  return name.replace(/\s+/g, " ").trim().toLocaleUpperCase("fr-FR");
+}
+
 const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "OSB 3": s.dimensionLabelOsb3,
   "PLANCHES CLOTURE A EMBOITER CL4 VERT": s.dimensionLabelPlanchesCloture,
@@ -16,17 +20,17 @@ const DIMENSION_LABEL_EXTRA_CLASS: Record<string, string> = {
   "POTEAUX ET GANIVELLE CHÂTAIGNIER SCIÉE, DOUBLE TORSION, CLOTURE GIRONDINE": s.dimensionLabelGanivelle,
   "RONDINS ET DEMIS RONDINS AUTOCLAVE VERT": s.dimensionLabelRondins,
   "ROULEAU DE GRILLAGE 50ML": s.dimensionLabelGrillage,
-  "Poteaux en châtaignier épointés": s.dimensionLabelPoteauxChataignier,
+  "POTEAUX EN CHÂTAIGNIER ÉPOINTÉS": s.dimensionLabelPoteauxChataignier,
   "TÔLE RUSTICA FLORENCE ANTHIQUE": s.dimensionLabelToleRustica,
   "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE MARRON": s.dimensionLabelBardagePinMarron,
   "CLINS DE BARDAGE PIN DES LANDES": s.dimensionLabelClinsBardage,
   "BARDAGE PIN DES LANDES ET COUVRE JOINTS BRUT DE SCIAGE - AUTOCLAVE VERT": s.dimensionLabelBardagePinVert,
   "FAUX CLAIRE VOIE PIN DES LANDES RABOTÉ": s.dimensionLabelFauxClaireVoie,
-  "CLINS BIAISEES PIN DES LANDES RABOTÉ (15 unités au ml)": s.dimensionLabelClinsBiaisees,
+  "CLINS BIAISEES PIN DES LANDES RABOTÉ (15 UNITÉS AU ML)": s.dimensionLabelClinsBiaisees,
   "BARDAGE PIN DES LANDES AVEC COUVRE JOINT INTÉGRÉ RABOTÉ": s.dimensionLabelBardageCouvreJointIntegre,
   "BARDAGE DOUGLAS CL3 INCOLORE BOIS NATUREL": s.dimensionLabelBardageDouglas,
-  "CLINS  DE BARDAGE  A EMBOITER DOUGLAS": s.dimensionLabelClinsDouglas,
-  "CLINS DE BARDAGE  FAUX CLAIRE VOIE DOUGLAS": s.dimensionLabelClinsDouglas,
+  "CLINS DE BARDAGE A EMBOITER DOUGLAS": s.dimensionLabelClinsDouglas,
+  "CLINS DE BARDAGE FAUX CLAIRE VOIE DOUGLAS": s.dimensionLabelClinsDouglas,
 };
 
 const SINGLE_COLUMN_DIMENSION_PRODUCTS = new Set([
@@ -76,7 +80,10 @@ export default async function SubcategoryPage({
                         return (
                           <p key={d.id} className={s.dimensionRow}>
                             <span
-                              className={[s.dimensionLabel, DIMENSION_LABEL_EXTRA_CLASS[product.name]]
+                              className={[
+                                s.dimensionLabel,
+                                DIMENSION_LABEL_EXTRA_CLASS[normalizeProductName(product.name)],
+                              ]
                                 .filter(Boolean)
                                 .join(" ")}
                             >
@@ -92,7 +99,8 @@ export default async function SubcategoryPage({
                     return (
                       <div
                         className={
-                          dimensionRows.length > 6 && !SINGLE_COLUMN_DIMENSION_PRODUCTS.has(product.name)
+                          dimensionRows.length > 6 &&
+                          !SINGLE_COLUMN_DIMENSION_PRODUCTS.has(normalizeProductName(product.name))
                             ? s.dimensionListTwoCol
                             : undefined
                         }
